@@ -1,0 +1,17 @@
+<vector xmlns:aapt="http://schemas.android.com/aapt" xmlns:android="http://schemas.android.com/apk/res/android" android:height="24dp" android:viewportHeight="200" android:viewportWidth="200" android:width="24dp">
+      
+    <path android:fillColor="#000000" android:fillType="nonZero" android:pathData="M102.72,183.9L102.72,183.9A5,5 47.1,0 0,103.51 176.88L34.92,90.88A5,5 95.76,0 0,27.9 90.09L27.9,90.09A5,5 95.76,0 0,27.11 97.11L95.69,183.11A5,5 47.1,0 0,102.72 183.9z" android:strokeWidth="0.45"/>
+      
+    <path android:fillColor="#000000" android:fillType="nonZero" android:pathData="M97.28,183.9L97.28,183.9A5,5 80.93,0 1,96.49 176.88L165.08,90.88A5,5 83.63,0 1,172.1 90.09L172.1,90.09A5,5 83.63,0 1,172.89 97.11L104.31,183.11A5,5 80.93,0 1,97.28 183.9z" android:strokeWidth="0.45"/>
+      
+    <path android:fillColor="#000000" android:fillType="nonZero" android:pathData="M75.3,98.99L75.3,98.99A5,5 0,0 0,80.3 93.99L80.3,20.13A5,5 0,0 0,75.3 15.13L75.3,15.13A5,5 0,0 0,70.3 20.13L70.3,93.99A5,5 0,0 0,75.3 98.99z" android:strokeWidth="0.221179"/>
+      
+    <path android:fillColor="#000000" android:fillType="nonZero" android:pathData="M124.69,98.99L124.69,98.99A5,5 0,0 0,129.69 93.99L129.69,20A5,5 0,0 0,124.69 15L124.69,15A5,5 0,0 0,119.69 20L119.69,93.99A5,5 0,0 0,124.69 98.99z" android:strokeWidth="0.181862"/>
+      
+    <path android:fillColor="#000000" android:fillType="nonZero" android:pathData="M75.54,25L124.46,25A5,5 0,0 0,129.46 20L129.46,20A5,5 0,0 0,124.46 15L75.54,15A5,5 0,0 0,70.54 20L70.54,20A5,5 0,0 0,75.54 25z" android:strokeWidth="0.22706"/>
+      
+    <path android:fillColor="#000000" android:fillType="nonZero" android:pathData="M31.01,98.99L75.3,98.99A5,5 0,0 0,80.3 93.99L80.3,93.99A5,5 0,0 0,75.3 88.99L31.01,88.99A5,5 0,0 0,26.01 93.99L26.01,93.99A5,5 0,0 0,31.01 98.99z" android:strokeWidth="0.389902"/>
+      
+    <path android:fillColor="#000000" android:fillType="nonZero" android:pathData="M124.69,98.99L168.99,98.99A5,5 0,0 0,173.99 93.99L173.99,93.99A5,5 0,0 0,168.99 88.99L124.69,88.99A5,5 0,0 0,119.69 93.99L119.69,93.99A5,5 0,0 0,124.69 98.99z" android:strokeWidth="0.389939"/>
+    
+</vector>
