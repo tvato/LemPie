@@ -4,9 +4,10 @@ import androidx.room.Embedded
 import androidx.room.Relation
 import eu.tvato.lempie.database.datetimeformat.DateTimeFormat
 import eu.tvato.lempie.database.theme.Theme
+import eu.tvato.lempie.database.selected.Selected
 
 data class Settings(
-    @Embedded val user: User,
+    @Embedded val selected: Selected,
     @Relation(
         parentColumn = "theme_id",
         entityColumn = "id"
