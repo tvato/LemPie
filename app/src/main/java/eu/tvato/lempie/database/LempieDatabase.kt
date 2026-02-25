@@ -6,14 +6,14 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import eu.tvato.lempie.database.datetimeformat.DateTimeFormat
 import eu.tvato.lempie.database.datetimeformat.DateTimeFormatDao
-import eu.tvato.lempie.database.settings.Settings
 import eu.tvato.lempie.database.settings.SettingsDao
-import eu.tvato.lempie.database.settings.User
+import eu.tvato.lempie.database.selected.Selected
 import eu.tvato.lempie.database.theme.Theme
 import eu.tvato.lempie.database.theme.ThemeDao
+import eu.tvato.lempie.database.selected.SelectedDao
 
 @Database(
-    entities = [Theme::class, DateTimeFormat::class, User::class],
+    entities = [Theme::class, DateTimeFormat::class, Selected::class],
     version = 1,
     exportSchema = false
 )
@@ -21,6 +21,7 @@ abstract class LempieDatabase: RoomDatabase() {
     abstract fun settingsDao(): SettingsDao
     abstract fun themeDao(): ThemeDao
     abstract fun dateTimeFormatDao(): DateTimeFormatDao
+    abstract fun selectedDao(): SelectedDao
 
     companion object{
         @Volatile

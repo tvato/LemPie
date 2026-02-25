@@ -6,9 +6,10 @@ import eu.tvato.lempie.database.datetimeformat.DateTimeFormat
 import eu.tvato.lempie.database.datetimeformat.DateTimeFormatDao
 import eu.tvato.lempie.database.settings.Settings
 import eu.tvato.lempie.database.settings.SettingsDao
-import eu.tvato.lempie.database.settings.User
+import eu.tvato.lempie.database.selected.Selected
 import eu.tvato.lempie.database.theme.Theme
 import eu.tvato.lempie.database.theme.ThemeDao
+import eu.tvato.lempie.database.selected.SelectedDao
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +26,7 @@ class DatabaseViewModel(
     private val settingsDao: SettingsDao = db.settingsDao()
     private val themeDao: ThemeDao = db.themeDao()
     private val dateTimeFormatDao: DateTimeFormatDao = db.dateTimeFormatDao()
+    private val selectedDao: SelectedDao = db.selectedDao()
     private val userId = MutableStateFlow(1)
     private val themeId = MutableStateFlow(1)
     private val formatId = MutableStateFlow(1)
@@ -70,19 +72,19 @@ class DatabaseViewModel(
 
     fun addDateTimeFormat(name: String, format: String){
         viewModelScope.launch {
-            dateTimeFormatDao.insertDateTimeFormat(DateTimeFormat(datetimeFormat = format))
+            dateTimeFormatDao.insertDateTimeFormat(DateTimeFormat(format = format))
         }
     }
 
     fun addSettings(){
         viewModelScope.launch {
-            settingsDao.insertSettings(User(1,1,1))
+            selectedDao.insertSelected(Selected(1,1,1))
         }
     }
 
     fun changeFormatId(newId: Int){
         viewModelScope.launch {
-            settingsDao.updateUserSettings(userSettings.value?.user?.copy(datetimeFormatId = newId) ?: User(themeId = 1, datetimeFormatId = 1))
+            selectedDao.updateSelected(userSettings.value?.selected?.copy(datetimeFormatId = newId) ?: Selected(themeId = 1, datetimeFormatId = 1))
         }
     }
 

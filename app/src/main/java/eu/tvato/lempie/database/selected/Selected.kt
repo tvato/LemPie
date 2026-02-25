@@ -1,4 +1,4 @@
-package eu.tvato.lempie.database.settings
+package eu.tvato.lempie.database.selected
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -9,7 +9,7 @@ import eu.tvato.lempie.database.datetimeformat.DateTimeFormat
 import eu.tvato.lempie.database.theme.Theme
 
 @Entity(
-    tableName = "user",
+    tableName = "selected",
     foreignKeys = [
         ForeignKey(
             entity = Theme::class,
@@ -27,7 +27,7 @@ import eu.tvato.lempie.database.theme.Theme
         Index("datetime_format_id")
     ]
 )
-data class User(
+data class Selected(
     @PrimaryKey(true) val userId: Int = 0,
     @ColumnInfo("theme_id") val themeId: Int,
     @ColumnInfo("datetime_format_id") val datetimeFormatId: Int,
