@@ -29,6 +29,7 @@ abstract class LempieDatabase: RoomDatabase() {
         fun getDatabase(context: Context): LempieDatabase{
             return Instance ?: synchronized(this){
                 Room.databaseBuilder(context, LempieDatabase::class.java, "lempie_database")
+                    .createFromAsset("defaults.db")
                     .fallbackToDestructiveMigration(false)
                     .build()
                     .also { Instance = it }

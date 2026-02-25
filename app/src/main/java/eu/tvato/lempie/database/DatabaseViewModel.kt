@@ -20,41 +20,29 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
 class DatabaseViewModel(
-    //private val repository: LempieRepository
-    private val settingsDao: SettingsDao,
-    private val themeDao: ThemeDao,
-    private val dateTimeFormatDao: DateTimeFormatDao
+    db: LempieDatabase
 ): ViewModel() {
+    private val settingsDao: SettingsDao = db.settingsDao()
+    private val themeDao: ThemeDao = db.themeDao()
+    private val dateTimeFormatDao: DateTimeFormatDao = db.dateTimeFormatDao()
     private val userId = MutableStateFlow(1)
     private val themeId = MutableStateFlow(1)
     private val formatId = MutableStateFlow(1)
-
-    //@OptIn(ExperimentalCoroutinesApi::class)
-    //val userSettings: Flow<Settings> = userId.filterNotNull().flatMapLatest { id ->
-        /*val settings = repository.getUserSettings(id)
-        settings.collect { (user, theme, datetimeFormat) ->
-            themeId.value = theme
-            formatId.value = datetimeFormat
-        }
-        settings*/
-        //repository.getUserSettings(id)
-        //settingsDao.getUserSettings(id)
-    //}
 
     private val _settings = MutableStateFlow<Settings?>(null)
     val userSettings: StateFlow<Settings?> = _settings.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val theme: Flow<Theme> = themeId.filterNotNull().flatMapLatest { id ->
-        //repository.getCurrentTheme(id)
         themeDao.getCurrentTheme(id)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val dateTimeFormat: Flow<DateTimeFormat> = formatId.filterNotNull().flatMapLatest { id ->
-        //repository.getCurrentDateTimeFormat(id)
         dateTimeFormatDao.getCurrentDateTimeFormat(id)
     }
+
+
 
     fun loadUserSettings(){
         viewModelScope.launch {
@@ -64,22 +52,37 @@ class DatabaseViewModel(
 
     fun addTheme(name: String){
         viewModelScope.launch {
-            //repository.insertTheme(Theme(themeName = name))
-            themeDao.insertTheme(Theme(themeName = name))
+            themeDao.insertTheme(Theme(
+                themeName = "",  primary = 0, onPrimary = 0, primaryContainer = 0, onPrimaryContainer = 0,
+                inversePrimary = 0, secondary = 0, onSecondary = 0, secondaryContainer = 0, onSecondaryContainer = 0,
+                tertiary = 0, onTertiary = 0, tertiaryContainer = 0, onTertiaryContainer = 0, background = 0,
+                onBackground = 0, surface = 0, onSurface = 0, surfaceVariant = 0, onSurfaceVariant = 0,
+                surfaceTint = 0, inverseSurface = 0, inverseOnSurface = 0, error = 0, onError = 0,
+                errorContainer = 0, onErrorContainer = 0, outline = 0, outlineVariant = 0, scrim = 0,
+                surfaceBright = 0, surfaceContainer = 0, surfaceContainerHigh = 0, surfaceContainerHighest = 0,
+                surfaceContainerLow = 0, surfaceContainerLowest = 0, surfaceDim = 0, primaryFixed = 0,
+                primaryFixedDim = 0, onPrimaryFixed = 0, onPrimaryFixedVariant = 0, secondaryFixed = 0,
+                secondaryFixedDim = 0, onSecondaryFixed = 0, onSecondaryFixedVariant = 0, tertiaryFixed = 0,
+                tertiaryFixedDim = 0, onTertiaryFixed = 0, onTertiaryFixedVariant = 0
+            ))
         }
     }
 
     fun addDateTimeFormat(name: String, format: String){
         viewModelScope.launch {
-            //repository.insertDateTimeFormat(DateTimeFormat(formatName = name, datetimeFormat = format))
-            dateTimeFormatDao.insertDateTimeFormat(DateTimeFormat(formatName = name, datetimeFormat = format))
+            dateTimeFormatDao.insertDateTimeFormat(DateTimeFormat(datetimeFormat = format))
         }
     }
 
     fun addSettings(){
         viewModelScope.launch {
-            //repository.insertSettings(User(themeId = 1, datetimeFormatId = 1))
-            settingsDao.insertSettings(User(themeId = 1, datetimeFormatId = 1))
+            settingsDao.insertSettings(User(1,1,1))
+        }
+    }
+
+    fun changeFormatId(newId: Int){
+        viewModelScope.launch {
+            settingsDao.updateUserSettings(userSettings.value?.user?.copy(datetimeFormatId = newId) ?: User(themeId = 1, datetimeFormatId = 1))
         }
     }
 

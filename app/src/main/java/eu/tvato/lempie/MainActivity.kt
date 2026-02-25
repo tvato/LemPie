@@ -6,12 +6,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -19,39 +21,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import eu.tvato.lempie.database.DatabaseViewModel
 import eu.tvato.lempie.database.LempieDatabase
+import eu.tvato.lempie.ui.screens.HomeScreen
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.ui.theme.Theme
+import eu.tvato.lempie.utils.parseIsoDate
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val db = LempieDatabase.getDatabase(this)
-        val dbViewModel = DatabaseViewModel(
-            settingsDao = db.settingsDao(),
-            themeDao = db.themeDao(),
-            dateTimeFormatDao = db.dateTimeFormatDao()
-        )
+        //val db = LempieDatabase.getDatabase(this)
+        //val dbViewModel = DatabaseViewModel(db)
         enableEdgeToEdge()
         setContent {
-            //val dbViewModel: DatabaseViewModel = DatabaseViewModel(AppDataContainer(this).repository)
-            dbViewModel.setUserId(1)
-            dbViewModel.addTheme("Dark")
-            dbViewModel.addDateTimeFormat("default", "MMM d, yy, HH:mm")
-            dbViewModel.addSettings()
-            dbViewModel.loadUserSettings()
-            val settings = dbViewModel.userSettings.collectAsState()
-            Log.d("db", "Settings 3: ${settings.value}")
             LemPieTheme(theme = Theme.Dark){
-                /*HomeScreen(
+                HomeScreen(
                     modifier = Modifier
-                )*/
-                DBTestScreen()
+                )
                 /*UserScreen(
                     innerPadding = PaddingValues(0.dp),
                     navController = rememberNavController(),
@@ -62,15 +53,43 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Preview
+
 @Composable
-fun DBTestScreen(){
+fun DBTestScreen(
+    format: String,
+    backgroundColor: Long,
+    textColor: Long,
+    dbViewModel: DatabaseViewModel,
+    currentFormatId: Int
+){
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().background(Color(backgroundColor)),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ){
         Text(
-            text = "Hello!!"
+            text = "DB Testing....",
+            color = Color(textColor)
         )
+        Text(
+            text = "2025-10-24T15:09:39.355313Z",
+            color = Color(textColor)
+        )
+        Text(
+            text = parseIsoDate("2025-10-24T15:09:39.355313Z", format),
+            color = Color(textColor)
+        )
+        Button(
+            onClick = {
+                Log.d("db", "Changing format...")
+                dbViewModel.changeFormatId(
+                    if(currentFormatId < 10) currentFormatId + 1 else 1
+                )
+                dbViewModel.loadUserSettings()
+            }
+        ){
+            Text(text = "Change format", color = Color(textColor))
+        }
     }
 }
 
