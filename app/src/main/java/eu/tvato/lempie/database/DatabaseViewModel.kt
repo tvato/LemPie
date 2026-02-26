@@ -1,5 +1,6 @@
 package eu.tvato.lempie.database
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import eu.tvato.lempie.database.datetimeformat.DateTimeFormat
@@ -32,7 +33,7 @@ class DatabaseViewModel(
     private val formatId = MutableStateFlow(1)
 
     private val _settings = MutableStateFlow<Settings?>(null)
-    val userSettings: StateFlow<Settings?> = _settings.asStateFlow()
+    val settings: StateFlow<Settings?> = _settings.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val theme: Flow<Theme> = themeId.filterNotNull().flatMapLatest { id ->
@@ -43,8 +44,6 @@ class DatabaseViewModel(
     val dateTimeFormat: Flow<DateTimeFormat> = formatId.filterNotNull().flatMapLatest { id ->
         dateTimeFormatDao.getCurrentDateTimeFormat(id)
     }
-
-
 
     fun loadUserSettings(){
         viewModelScope.launch {
@@ -84,7 +83,11 @@ class DatabaseViewModel(
 
     fun changeFormatId(newId: Int){
         viewModelScope.launch {
-            selectedDao.updateSelected(userSettings.value?.selected?.copy(datetimeFormatId = newId) ?: Selected(themeId = 1, datetimeFormatId = 1))
+            if(settings.value != null){
+                selectedDao.updateSelected(settings.value!!.selected.copy(datetimeFormatId = newId))
+            }else{
+                Log.w("database", "Could not change format ID!")
+            }
         }
     }
 

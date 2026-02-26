@@ -1,11 +1,13 @@
 package eu.tvato.lempie.database.selected
 
+import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
+@Dao
 interface SelectedDao {
     @Query("SELECT * FROM selected")
     fun getAllSelected(): Flow<List<Selected>>
