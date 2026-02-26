@@ -16,18 +16,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import eu.tvato.lempie.R
-import eu.tvato.lempie.comment.Comment
+import eu.tvato.lempie.comment.CommentView
 import eu.tvato.lempie.utils.parseIsoDate
 
 @Composable
 fun CommentRow(
-    comment: Comment?,
+    comment: CommentView?,
     username: String,
     userInstance: String,
     modifier: Modifier = Modifier,
     noPadding: Boolean = false
 ) {
-    val paddingValue = if(noPadding) 0 else comment?.path?.split(".")?.size?.minus(2)
+    val paddingValue = if(noPadding) 0 else comment?.comment?.path?.split(".")?.size?.minus(2)
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -47,12 +47,12 @@ fun CommentRow(
                 color = MaterialTheme.colorScheme.secondary
             )
             Text(
-                text = parseIsoDate(comment?.published),
+                text = parseIsoDate(comment?.comment?.published),
                 color = MaterialTheme.colorScheme.tertiary
             )
         }
         Text(
-            text = comment?.content.toString(),
+            text = comment?.comment?.content.toString(),
             modifier = modifier
                 .padding(
                     start = (paddingValue?.times(20)?.plus(10))?.dp ?: 5.dp,
@@ -68,7 +68,7 @@ fun CommentRow(
         ) {
             InteractionButton(
                 res = R.drawable.upvote,
-                text = comment?.upvotes.toString(),
+                text = comment?.counts?.upvotes.toString(),
                 modifier = modifier
                     .padding(
                         start = (paddingValue?.times(20)?.plus(5))?.dp ?: 0.dp
@@ -76,7 +76,7 @@ fun CommentRow(
             )
             InteractionButton(
                 res = R.drawable.downvote,
-                text = comment?.downvotes.toString()
+                text = comment?.counts?.downvotes.toString()
             )
             Spacer(modifier.weight(1f))
             InteractionButton(
@@ -97,8 +97,8 @@ fun CommentRow(
 
 @Composable
 fun UserComment(
-    comment: Comment?,
-    community: String,
+    comment: CommentView?,
+    username: String,
     communityInstance: String,
     navController: NavHostController,
     modifier: Modifier = Modifier
@@ -108,7 +108,7 @@ fun UserComment(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primaryContainer)
             .clickable(onClick = {
-                navController.navigate("Post/${comment?.postId}")
+                navController.navigate("Post/${comment?.comment?.postId}")
             })
     ) {
         Row(
@@ -121,16 +121,16 @@ fun UserComment(
                 .fillMaxWidth()
         ) {
             Text(
-                text = "${community}@${if(communityInstance.split("/").size > 1) communityInstance.split("/")[2] else communityInstance}",
+                text = "${username}@${if(communityInstance.split("/").size > 1) communityInstance.split("/")[2] else communityInstance}",
                 color = MaterialTheme.colorScheme.secondary
             )
             Text(
-                text = parseIsoDate(comment?.published),
+                text = parseIsoDate(comment?.comment?.published),
                 color = MaterialTheme.colorScheme.tertiary
             )
         }
         Text(
-            text = comment?.content.toString(),
+            text = comment?.comment?.content.toString(),
             modifier = modifier
                 .padding(
                     start = 5.dp,
@@ -146,7 +146,7 @@ fun UserComment(
         ) {
             InteractionButton(
                 res = R.drawable.upvote,
-                text = comment?.upvotes.toString(),
+                text = comment?.counts?.upvotes.toString(),
                 modifier = modifier
                     .padding(
                         start = 5.dp
@@ -154,7 +154,7 @@ fun UserComment(
             )
             InteractionButton(
                 res = R.drawable.downvote,
-                text = comment?.downvotes.toString()
+                text = comment?.counts?.downvotes.toString()
             )
             Spacer(modifier.weight(1f))
             InteractionButton(

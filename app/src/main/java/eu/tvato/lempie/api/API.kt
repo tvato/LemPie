@@ -4,63 +4,64 @@ import eu.tvato.lempie.comment.CommentResponse
 import eu.tvato.lempie.community.CommunityResponse
 import eu.tvato.lempie.post.PostResponse
 import eu.tvato.lempie.post.PostsResponse
-import eu.tvato.lempie.user.UserContents
-import eu.tvato.lempie.user.UserDetailResponse
+import eu.tvato.lempie.user.UserResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-// TODO() v3...
-
 interface API {
-    @GET("api/v4/post/list")
+    @GET("api/v3/post/list")
     suspend fun getPosts(
-        @Query("type_") type: String? = "all",
+        @Query("type_") type: String? = "All",
         @Query("sort") sort: String? = null,
-        @Query("time_range_seconds") timeRangeSeconds: String? = null,
+        @Query("page") page: Int? = null,
+        @Query("limit") limit: Int? = null,
         @Query("community_id") communityId: Int? = null,
         @Query("community_name") communityName: String? = null,
-        @Query("multi_community_id") multiCommunityId: Int? = null,
-        @Query("multi_community_name") multiCommunityName: String? = null,
+        @Query("saved_only") savedOnly: Boolean? = null,
+        @Query("liked_only") likedOnly: Boolean? = null,
+        @Query("disliked_only") dislikedOnly: Boolean? = null,
         @Query("show_hidden") showHidden: Boolean? = null,
         @Query("show_read") showRead: Boolean? = null,
         @Query("show_nsfw") showNsfw: Boolean? = null,
-        @Query("hide_media") hideMedia: Boolean? = null,
-        @Query("mark_as_read") markAsRead: Boolean? = null,
-        @Query("no_comments_only") noCommentsOnly: Boolean? = null,
-        @Query("page_cursor") page: String? = null,
-        @Query("limit") limit: Int? = null
+        @Query("page_cursor") pageCursor: String? = null,
     ): PostsResponse
 
-    @GET("api/v4/post")
+    @GET("api/v3/post")
     suspend fun getPost(
         @Query("id") postId: Int? = null,
         @Query("comment_id") commentId: Int? = null
     ): PostResponse
 
-    @GET("api/v4/comment/list")
+    @GET("api/v3/comment/list")
     suspend fun getCommentsByPostId(
+        @Query("type_") type: String? = "All",
+        @Query("sort") sort: String? = null,
+        @Query("max_depth") maxDepth: Int? = null,
+        @Query("page") page: Int? = null,
+        @Query("limit") limit: Int? = null,
+        @Query("community_id") communityId: Int? = null,
+        @Query("community_name") communityName: String? = null,
         @Query("post_id") postId: Int,
-        @Query("page_cursor") page: String? = null
+        @Query("parent_id") parentId: Int? = null,
+        @Query("saved_only") savedOnly: Boolean? = null,
+        @Query("liked_only") likedOnly: Boolean? = null,
+        @Query("disliked_only") dislikedOnly: Boolean? = null
     ): CommentResponse
 
-    @GET("api/v4/person/content")
-    suspend fun getUserContent(
-        @Query("limit") limit: Int? = null,
-        @Query("page_cursor") page: String? = null,
-        @Query("username") username: String? = null,
-        @Query("person_id") userId: Int? = null,
-        @Query("type_") type: String? = null
-    ): UserContents
-
-    @GET("api/v4/person")
+    @GET("api/v3/user")
     suspend fun getUserDetail(
+        @Query("person_id") userId: Int? = null,
         @Query("username") username: String? = null,
-        @Query("person_id") userId: Int? = null
-    ): UserDetailResponse
+        @Query("sort") sort: String? = null,
+        @Query("page") page: Int? = null,
+        @Query("limit") limit: Int? = null,
+        @Query("community_id") communityId: Int? = null,
+        @Query("saved_only") savedOnly: Boolean? = null
+    ): UserResponse
 
-    @GET("api/v4/community")
+    @GET("api/v3/community")
     suspend fun getCommunity(
-        @Query("name") name: String? = null,
-        @Query("id") communityId: Int? = null
+        @Query("id") communityId: Int? = null,
+        @Query("name") name: String? = null
     ): CommunityResponse
 }

@@ -1,4 +1,4 @@
-package eu.tvato.lempie.comment
+package eu.tvato.lempie.user
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -6,16 +6,15 @@ import eu.tvato.lempie.api.API
 import retrofit2.HttpException
 import java.io.IOException
 
-class CommentPagingSource(
+class UserPagingSource(
     private val api: API,
-    private val postId: Int
-): PagingSource<Int, CommentView>() {
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CommentView> {
-        return try{
-            val response = api.getCommentsByPostId(postId = postId, page = params.key, sort = "New")
-            CommentsHolder.addToComments(response.comments)
+    private val userId: Int
+): PagingSource<Int, UserResponse>() {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UserResponse> {
+        return try {
+            val response = api.getUserDetail(userId = userId, page = params.key)
             LoadResult.Page(
-                data = response.comments,
+                data = listOf(response),
                 prevKey = params.key?.minus(1),
                 nextKey = params.key?.plus(1)
             )
@@ -26,7 +25,7 @@ class CommentPagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, CommentView>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, UserResponse>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)

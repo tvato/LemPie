@@ -26,6 +26,9 @@ import coil.compose.AsyncImage
 import eu.tvato.lempie.R
 import eu.tvato.lempie.community.Community
 import eu.tvato.lempie.post.Post
+import eu.tvato.lempie.post.PostView
+import eu.tvato.lempie.ui.previewdata.previewCommunities
+import eu.tvato.lempie.ui.previewdata.previewPostViews
 import eu.tvato.lempie.ui.previewdata.previewPosts
 import eu.tvato.lempie.ui.previewdata.previewUsers
 import eu.tvato.lempie.ui.theme.LemPieTheme
@@ -34,7 +37,7 @@ import eu.tvato.lempie.utils.parseIsoDate
 
 @Composable
 fun PostCard(
-    post: Post?,
+    post: PostView?,
     user: User?,
     community: Community?,
     navController: NavHostController,
@@ -48,7 +51,7 @@ fun PostCard(
             .background(MaterialTheme.colorScheme.primaryContainer)
             .padding(bottom = 5.dp)
             .clickable(onClick = {
-                navController.navigate("Post/${post?.id}")
+                navController.navigate("Post/${post?.post?.id}")
             }),
         shape = CardDefaults.shape,
         colors = CardDefaults.cardColors().copy(
@@ -67,23 +70,23 @@ fun PostCard(
             navController = navController
         )
         Text(
-            text = post?.title.toString(),
+            text = post?.post?.title.toString(),
             fontSize = 30.sp,
             modifier = modifier.padding(start = 20.dp, top = 10.dp, bottom = 20.dp, end = 20.dp),
             color = MaterialTheme.colorScheme.onBackground
         )
 
-        TagAndDateRow(post)
+        TagAndDateRow(post?.post)
 
-        if(post?.imageOrLink != null && post.urlContentType?.contains("image") != true) Text(
-            text = post.imageOrLink.split("/")[2],
+        if(post?.post?.imageOrLink != null && post.post.urlContentType?.contains("image") != true) Text(
+            text = post.post.imageOrLink.split("/")[2],
             modifier = modifier.padding(start = 20.dp),
             color = MaterialTheme.colorScheme.tertiary
         )
 
-        if(post?.text?.isNotEmpty() ?: false && noText) {
+        if(post?.post?.text?.isNotEmpty() ?: false && noText) {
             Text(
-                text = post.text,
+                text = post.post.text,
                 modifier = modifier.padding(start = 20.dp, top = 10.dp, end = 20.dp, bottom = 20.dp),
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = if(limitTextRows) 5 else Int.MAX_VALUE,
@@ -91,18 +94,18 @@ fun PostCard(
             )
         }
 
-        if(post?.urlContentType?.contains("image") ?: false){
+        if(post?.post?.urlContentType?.contains("image") ?: false){
             AsyncImage(
-                model = post.imageOrLink,
+                model = post.post.imageOrLink,
                 contentDescription = null,
                 modifier = modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(start = 20.dp, top =10.dp, bottom = 10.dp, end = 20.dp)
                     .fillMaxHeight(0.5f)
             )
-        }else if(post?.imageOrLink == null){
+        }else if(post?.post?.imageOrLink == null){
             AsyncImage(
-                model = post?.thumbnailUrl,
+                model = post?.post?.thumbnailUrl,
                 contentDescription = null,
                 modifier = modifier
                     .align(Alignment.CenterHorizontally)
@@ -142,7 +145,7 @@ fun TagAndDateRow(post: Post?, modifier: Modifier = Modifier){
 }
 
 @Composable
-fun ButtonsRow(post: Post?, modifier: Modifier = Modifier){
+fun ButtonsRow(post: PostView?, modifier: Modifier = Modifier){
     Row(
         horizontalArrangement = Arrangement.Start,
         modifier = modifier
@@ -152,16 +155,16 @@ fun ButtonsRow(post: Post?, modifier: Modifier = Modifier){
         Row{
             InteractionButton(
                 res = R.drawable.upvote,
-                text = post?.upvotes.toString()
+                text = post?.counts?.upvotes.toString()
             )
             InteractionButton(
                 res = R.drawable.downvote,
-                text = post?.downvotes.toString(),
+                text = post?.counts?.downvotes.toString(),
                 modifier = modifier.padding(start = 10.dp)
             )
             InteractionButton(
                 res = R.drawable.comment,
-                text = post?.commentCount.toString(),
+                text = post?.counts?.commentCount.toString(),
                 modifier = modifier.padding(start = 10.dp)
             )
         }
@@ -185,18 +188,9 @@ fun ButtonsRow(post: Post?, modifier: Modifier = Modifier){
 fun PostCardPreview() {
     LemPieTheme {
         PostCard(
-            post = previewPosts[1],
-            community = Community(
-                id = 1, name = "Preview Community", title = "Preview Community", description = "null",
-                isRemoved = false, published = "Jan 22, 2026, 12:21", updated = null, isDeleted = false,
-                isNsfw = false, url = "some.url", isLocal = false, postingRestrictedToMods = false,
-                instanceId = 1, visibility = "", summary = null, subscriberCount = 1,
-                postCount = 1, commentCount = 2, activeUsersDay = 1, activeUsersWeek = 1,
-                activeUsersMonth = 1, activeUsersHalfYear = 1, localSubscriberCount = 1,
-                reportCount = 0, unresolvedReportCount = 0, isLocalRemoved = false,
-                iconUrl = null, bannerUrl = null
-            ),
-            user = previewUsers[0],
+            post = previewPostViews[1],
+            community = previewPostViews[1].community,
+            user = previewPostViews[1].creator,
             navController = rememberNavController()
         )
     }

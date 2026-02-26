@@ -1,6 +1,8 @@
 package eu.tvato.lempie.ui.previewdata
 
 import eu.tvato.lempie.post.Post
+import eu.tvato.lempie.post.PostCounts
+import eu.tvato.lempie.post.PostView
 
 val previewPosts: List<Post> = listOf(
     Post(id = 1, title = "Preview title 1", imageOrLink = "https://some.website.com/",
@@ -21,10 +23,7 @@ val previewPosts: List<Post> = listOf(
         embedDescription = null, thumbnailUrl = null, postLink = "",
         isLocal = false, embedVideoUrl = null, languageId = 1,
         isFeaturedCommunity = false, isFeaturedLocal = false,
-        urlContentType = "text/html", altText = null, scheduledPublished = null,
-        newestCommentTime = null, commentCount = 5, score = 0, upvotes = 0,
-        downvotes = 0, reportCount = 0, unresolvedReportCount = 0,
-        isFederationPending = false, embedVideoWidth = null, embedVideoHeight = null),
+        urlContentType = "text/html", altText = null),
     Post(id = 2, title = "Preview title 2", imageOrLink = "https://www.example.com/",
         text = null, userId = 1, communityId = 1, isRemoved = false,
         isLocked = false, published = "Jan 17, 2026, 11:11", updated = null,
@@ -32,10 +31,7 @@ val previewPosts: List<Post> = listOf(
         embedDescription = null, thumbnailUrl = null, postLink = "",
         isLocal = false, embedVideoUrl = null, languageId = 1,
         isFeaturedCommunity = false, isFeaturedLocal = false,
-        urlContentType = "text/link", altText = null, scheduledPublished = null,
-        newestCommentTime = null, commentCount = 0, score = 0, upvotes = 0,
-        downvotes = 0, reportCount = 0, unresolvedReportCount = 0,
-        isFederationPending = false, embedVideoWidth = null, embedVideoHeight = null),
+        urlContentType = "text/link", altText = null),
     Post(id = 3, title = "Preview title 3", imageOrLink = "https://something.com",
         text = null, userId = 1, communityId = 1, isRemoved = false,
         isLocked = false, published = "Jan 17, 2026, 11:11", updated = null,
@@ -43,10 +39,7 @@ val previewPosts: List<Post> = listOf(
         embedDescription = null, thumbnailUrl = null, postLink = "",
         isLocal = false, embedVideoUrl = null, languageId = 1,
         isFeaturedCommunity = false, isFeaturedLocal = false,
-        urlContentType = null, altText = null, scheduledPublished = null,
-        newestCommentTime = null, commentCount = 0, score = 0, upvotes = 0,
-        downvotes = 0, reportCount = 0, unresolvedReportCount = 0,
-        isFederationPending = false, embedVideoWidth = null, embedVideoHeight = null),
+        urlContentType = null, altText = null),
     Post(id = 4, title = "Preview title 4", imageOrLink = "https://www.morefakewebsites.com",
         text = "askljdjaslkd ajsldkaj sdlkasj dlaksjd alskd aslkdjaslkdaj sldkasj dlaksjd alksdja sldkajs dlkasjd laksdja lskdja sldkasj dlaksdj alskdja slkdjas dlkasjd laskjd alskdj aslkdjas dlkasjd", userId = 1, communityId = 1, isRemoved = false,
         isLocked = false, published = "Jan 17, 2026, 11:11", updated = null,
@@ -54,8 +47,32 @@ val previewPosts: List<Post> = listOf(
         embedDescription = null, thumbnailUrl = null, postLink = "",
         isLocal = false, embedVideoUrl = null, languageId = 1,
         isFeaturedCommunity = false, isFeaturedLocal = false,
-        urlContentType = "text/html", altText = null, scheduledPublished = null,
-        newestCommentTime = null, commentCount = 0, score = 0, upvotes = 0,
-        downvotes = 0, reportCount = 0, unresolvedReportCount = 0,
-        isFederationPending = false, embedVideoWidth = null, embedVideoHeight = null)
+        urlContentType = "text/html", altText = null)
+)
+
+val previewPostViews = listOf(
+    PostView(
+        post = previewPosts[0], creator = previewUsers[0], community = previewCommunities[0], imageDetails = null,
+        creatorBannedFromCommunity = false, bannedFromCommunity = false, creatorIsMod = false, creatorIsAdmin = false,
+        counts = PostCounts(postId = 1, commentCount = 23, score = 22, upvotes = 30, downvotes = 8, published = "", newestCommentTime = ""),
+        subscribed = "", isSaved = false, isRead = false, isHidden = false, creatorBlocked = false, myVote = null, unreadComments = 0
+    ),
+    PostView(
+        post = previewPosts[1], creator = previewUsers[1], community = previewCommunities[1], imageDetails = null,
+        creatorBannedFromCommunity = false, bannedFromCommunity = false, creatorIsMod = false, creatorIsAdmin = false,
+        counts = PostCounts(postId = 1, commentCount = 23, score = 22, upvotes = 30, downvotes = 8, published = "", newestCommentTime = ""),
+        subscribed = "", isSaved = false, isRead = false, isHidden = false, creatorBlocked = false, myVote = null, unreadComments = 0
+    ),
+    PostView(
+        post = previewPosts[2], creator = previewUsers[2], community = previewCommunities[2], imageDetails = null,
+        creatorBannedFromCommunity = false, bannedFromCommunity = false, creatorIsMod = false, creatorIsAdmin = false,
+        counts = PostCounts(postId = 1, commentCount = 23, score = 22, upvotes = 30, downvotes = 8, published = "", newestCommentTime = ""),
+        subscribed = "", isSaved = false, isRead = false, isHidden = false, creatorBlocked = false, myVote = null, unreadComments = 0
+    ),
+    PostView(
+        post = previewPosts[3], creator = previewUsers[3], community = previewCommunities[3], imageDetails = null,
+        creatorBannedFromCommunity = false, bannedFromCommunity = false, creatorIsMod = false, creatorIsAdmin = false,
+        counts = PostCounts(postId = 1, commentCount = 23, score = 22, upvotes = 30, downvotes = 8, published = "", newestCommentTime = ""),
+        subscribed = "", isSaved = false, isRead = false, isHidden = false, creatorBlocked = false, myVote = null, unreadComments = 0
+    ),
 )

@@ -1,24 +1,35 @@
 package eu.tvato.lempie.ui.previewdata
 
 import eu.tvato.lempie.community.Community
+import eu.tvato.lempie.community.CommunityCounts
+import eu.tvato.lempie.community.CommunityView
 
 val previewCommunities = listOf(
     Community(
-        id = 1, name = "Test Community 1", title = "Test community 1", description = null, isRemoved = false,
-        published = "Jan 11, 2026, 12:23", updated = null, isDeleted = false, isNsfw = false, url = "https://voyager.lemmy.ml/c/test_comm_1",
-        isLocal = false, iconUrl = null, bannerUrl = null, postingRestrictedToMods = false,
-        instanceId = 1, visibility = "", summary = null, subscriberCount = 0, postCount = 1,
-        commentCount = 5, activeUsersDay = 2, activeUsersWeek = 3, activeUsersMonth = 4,
-        activeUsersHalfYear = 4, localSubscriberCount = 3, reportCount = 0,
-        unresolvedReportCount = 0, isLocalRemoved = false
+        id = 1, name = "Test Community 1", title = "Test community 1", description = null,
+        isRemoved = false, published = "Jan 11, 2026, 12:23", updated = null, isDeleted = false,
+        isNsfw = false, actorId = "https://voyager.lemmy.ml/c/test_comm_1", isLocal = false, iconUrl = null, bannerUrl = null,
+        postingRestrictedToMods = false, instanceId = 1, visibility = "", isHidden = false
     ),
     Community(
-        id = 2, name = "Test Community 2", title = "Test community 2", description = null, isRemoved = false,
-        published = "Jan 11, 2026, 12:23", updated = null, isDeleted = false, isNsfw = false, url = "",
-        isLocal = false, iconUrl = null, bannerUrl = null, postingRestrictedToMods = false,
-        instanceId = 1, visibility = "", summary = null, subscriberCount = 0, postCount = 1,
-        commentCount = 5, activeUsersDay = 2, activeUsersWeek = 3, activeUsersMonth = 4,
-        activeUsersHalfYear = 4, localSubscriberCount = 3, reportCount = 0,
-        unresolvedReportCount = 0, isLocalRemoved = false
+        id = 2, name = "Test Community 2", title = "Test community 2", description = null,
+        isRemoved = false, published = "Jan 11, 2026, 12:23", updated = null, isDeleted = false,
+        isNsfw = false, actorId = "", isLocal = false, iconUrl = null, bannerUrl = null,
+        postingRestrictedToMods = false, instanceId = 1, visibility = "", isHidden = false,
     )
+)
+
+val previewCommunityViews = listOf(
+    CommunityView(
+        community = previewCommunities[0], subscribed = "", isBlocked = false,
+        counts = CommunityCounts(communityId = 1, subscriberCount = 105, postCount = 20, commentCount = 55, published = "",
+            activeUsersDay = 5, activeUsersWeek = 11, activeUsersMonth = 20, activeUsers6Month = 44, localSubscribersCount = 44),
+        bannedFromCommunity = false
+    ),
+    CommunityView(
+        community = previewCommunities[1], subscribed = "", isBlocked = false,
+        counts = CommunityCounts(communityId = 2, subscriberCount = 105, postCount = 20, commentCount = 55, published = "",
+            activeUsersDay = 5, activeUsersWeek = 11, activeUsersMonth = 20, activeUsers6Month = 44, localSubscribersCount = 44),
+        bannedFromCommunity = false
+    ),
 )

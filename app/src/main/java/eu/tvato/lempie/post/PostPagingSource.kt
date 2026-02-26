@@ -1,5 +1,6 @@
 package eu.tvato.lempie.post
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import eu.tvato.lempie.api.API
@@ -10,42 +11,38 @@ class PostPagingSource(
     private val api: API,
     private val type: String?,
     private val sort: String?,
-    private val timeRangeSeconds: String?,
     private val communityId: Int?,
     private val communityName: String?,
-    private val multiCommunityId: Int?,
-    private val multiCommunityName: String?,
     private val showHidden: Boolean?,
     private val showRead: Boolean?,
     private val showNsfw: Boolean?,
-    private val hideMedia: Boolean?,
-    private val markAsRead: Boolean?,
-    private val noCommentsOnly: Boolean?,
-    private val limit: Int?
-): PagingSource<String, PostItem>() {
-    override suspend fun load(params: LoadParams<String>): LoadResult<String, PostItem> {
+    private val limit: Int?,
+    private val savedOnly: Boolean?,
+    private val likedOnly: Boolean?,
+    private val dislikedOnly: Boolean?,
+    private val pageCursor: String?
+): PagingSource<String, PostView>() {
+    override suspend fun load(params: LoadParams<String>): LoadResult<String, PostView> {
         return try{
             val response = api.getPosts(
                 type = type,
                 sort = sort,
-                timeRangeSeconds = timeRangeSeconds,
+                page = null,
+                limit = limit,
                 communityId = communityId,
                 communityName = communityName,
-                multiCommunityId = multiCommunityId,
-                multiCommunityName = multiCommunityName,
+                savedOnly = savedOnly,
+                likedOnly = likedOnly,
+                dislikedOnly = dislikedOnly,
                 showHidden = showHidden,
                 showRead = showRead,
                 showNsfw = showNsfw,
-                hideMedia = hideMedia,
-                markAsRead = markAsRead,
-                noCommentsOnly = noCommentsOnly,
-                limit = limit,
-                page = params.key
+                pageCursor = params.key
             )
 
             LoadResult.Page(
-                data = response.items.map { it },
-                prevKey = response.prevPage,
+                data = response.posts.map { it },
+                prevKey = params.key,
                 nextKey = if(response.nextPage != params.key) response.nextPage else null
             )
         }catch(e: IOException){
@@ -55,7 +52,7 @@ class PostPagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<String, PostItem>): String? {
+    override fun getRefreshKey(state: PagingState<String, PostView>): String? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.nextKey
                 ?: state.closestPageToPosition(anchorPosition)?.prevKey

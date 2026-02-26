@@ -30,11 +30,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import eu.tvato.lempie.R
-import eu.tvato.lempie.community.Community
+import eu.tvato.lempie.community.CommunityView
 import eu.tvato.lempie.community.CommunityViewModel
 import eu.tvato.lempie.ui.components.PostCard
-import eu.tvato.lempie.ui.previewdata.previewCommunities
-import eu.tvato.lempie.ui.previewdata.previewPosts
+import eu.tvato.lempie.ui.previewdata.previewCommunityViews
+import eu.tvato.lempie.ui.previewdata.previewPostViews
 import eu.tvato.lempie.ui.previewdata.previewUsers
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.ui.theme.Theme
@@ -60,7 +60,7 @@ fun CommunityScreen(
     ) {
         item {
             CommunityDetailsCard(
-                community = community.value?.communityView?.community
+                community = community.value?.communityView
             )
         }
 
@@ -69,7 +69,7 @@ fun CommunityScreen(
             key = { index -> index }
         ) { index ->
             PostCard(
-                post = posts[index]?.post,
+                post = posts[index],
                 user = posts[index]?.creator,
                 community = community.value?.communityView?.community,
                 navController = navController,
@@ -81,7 +81,7 @@ fun CommunityScreen(
 
 @Composable
 fun CommunityDetailsCard(
-    community: Community?,
+    community: CommunityView?,
     modifier: Modifier = Modifier,
 ){
     ConstraintLayout(
@@ -90,8 +90,8 @@ fun CommunityDetailsCard(
             .padding(bottom = 50.dp)
     ){
         val (banner, userIcon, card) = createRefs()
-        if(community?.bannerUrl != null) AsyncImage(
-            model = community.bannerUrl,
+        if(community?.community?.bannerUrl != null) AsyncImage(
+            model = community.community.bannerUrl,
             contentDescription = null,
             modifier = modifier
                 .fillMaxWidth()
@@ -117,42 +117,42 @@ fun CommunityDetailsCard(
             )
         ) {
             Text(
-                text = community?.name.toString(),
+                text = community?.community?.name.toString(),
                 modifier = modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(top = 50.dp)
             )
             Text(
-                text = "${community?.name}@${community?.url?.split("/")[2]}",
+                text = "${community?.community?.name}@${community?.community?.actorId?.split("/")[2]}",
                 modifier = modifier.align(Alignment.CenterHorizontally)
             )
             Row(
                 modifier = modifier.padding(top = 10.dp, start = 50.dp, end = 50.dp, bottom = 10.dp)
             ){
-                Text("Subscribers: ${community?.subscriberCount}")
+                Text("Subscribers: ${community?.counts?.subscriberCount}")
                 Spacer(modifier = modifier.weight(1f))
-                Text("Active users: ${community?.activeUsersMonth}")
+                Text("Active users: ${community?.counts?.activeUsersMonth}")
             }
             Row(
                 modifier = modifier.padding(top = 10.dp, start = 50.dp, end = 50.dp, bottom = 20.dp),
             ) {
                 Text(
-                    text = "Posts: ${community?.postCount}"
+                    text = "Posts: ${community?.counts?.postCount}"
                 )
                 Spacer(modifier = modifier.weight(1f))
                 Text(
-                    text = "Comments: ${community?.commentCount}"
+                    text = "Comments: ${community?.counts?.commentCount}"
                 )
             }
             Text(
-                text = "Created: ${parseIsoDate(community?.published)}",
+                text = "Created: ${parseIsoDate(community?.community?.published)}",
                 modifier = modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(bottom = 20.dp)
             )
         }
         AsyncImage(
-            model = community?.iconUrl,
+            model = community?.community?.iconUrl,
             contentDescription = null,
             fallback = painterResource(R.drawable.lempie_001), // TODO() change drawable, make better one...
             modifier = modifier
@@ -172,8 +172,8 @@ fun CommunityDetailsCard(
 fun CommunityScreenPreview(
     theme: Theme = Theme.Dark
 ){
-    val community = previewCommunities[0]
-    val posts = previewPosts
+    val community = previewCommunityViews[0]
+    val posts = previewPostViews
     val users = previewUsers
     LemPieTheme(theme = theme) {
         LazyColumn(
@@ -195,7 +195,7 @@ fun CommunityScreenPreview(
                 PostCard(
                     post = posts[index],
                     user = users[index],
-                    community = community,
+                    community = community.community,
                     navController = rememberNavController(),
                     limitTextRows = true
                 )

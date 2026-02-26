@@ -8,6 +8,7 @@ fun parseIsoDate(
     isoString: String?,
 ): String {
     val format = CurrentSettings.getFormat()
+    if(isoString == null) return ""
     return Instant.parse(isoString)
         .atZone(ZoneId.systemDefault())
         .format(DateTimeFormatter.ofPattern(format))

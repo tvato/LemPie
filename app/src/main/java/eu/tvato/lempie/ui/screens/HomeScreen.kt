@@ -30,6 +30,7 @@ import eu.tvato.lempie.ui.components.DrawerMenu
 import eu.tvato.lempie.ui.components.HomeTopBar
 import eu.tvato.lempie.ui.components.PostCard
 import eu.tvato.lempie.ui.components.PostTopBar
+import eu.tvato.lempie.ui.previewdata.previewPostViews
 import eu.tvato.lempie.ui.previewdata.previewPosts
 import eu.tvato.lempie.ui.previewdata.previewUsers
 import eu.tvato.lempie.ui.theme.LemPieTheme
@@ -184,7 +185,7 @@ fun CardList(
             key = { index -> items[index]?.post?.id ?: index }
         ){ index ->
             PostCard(
-                post = items[index]?.post,
+                post = items[index],
                 user = items[index]?.creator,
                 community = items[index]?.community,
                 navController = navController,
@@ -241,7 +242,7 @@ fun CardListPreviewDark(){
                 key = { index -> previewPosts[index].id }
             ) { index ->
                 PostCard(
-                    post = previewPosts[index],
+                    post = previewPostViews[index],
                     user = previewUsers[0],
                     community = null,
                     navController = rememberNavController(),
@@ -265,7 +266,7 @@ fun CardListPreviewLight(){
                 key = { index -> previewPosts[index].id }
             ) { index ->
                 PostCard(
-                    post = previewPosts[index],
+                    post = previewPostViews[index],
                     user = previewUsers[0],
                     community = null,
                     navController = rememberNavController(),
@@ -289,7 +290,7 @@ fun CardListPreviewDarkGen(){
                 key = { index -> previewPosts[index].id }
             ) { index ->
                 PostCard(
-                    post = previewPosts[index],
+                    post = previewPostViews[index],
                     user = previewUsers[0],
                     community = null,
                     navController = rememberNavController(),

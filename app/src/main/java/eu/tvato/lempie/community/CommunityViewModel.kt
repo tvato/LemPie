@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import eu.tvato.lempie.post.PostItem
 import eu.tvato.lempie.post.PostRepository
+import eu.tvato.lempie.post.PostView
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,23 +28,20 @@ class CommunityViewModel(
     private val _sort = MutableStateFlow<String?>(null)
     val sort: StateFlow<String?> = _sort.asStateFlow()
 
-    val posts: Flow<PagingData<PostItem>> = postRepository.getPosts(
+    val posts: Flow<PagingData<PostView>> = postRepository.getPosts(
         type = null,
         sort = sort.value,
-        timeRangeSeconds = null,
         communityId = communityId.value,
         communityName = communityName.value,
-        multiCommunityId = null,
-        multiCommunityName = null,
         showHidden = null,
         showRead = null,
         showNsfw = null,
-        hideMedia = null,
-        markAsRead = null,
-        noCommentsOnly = null,
-        limit = null
+        limit = null,
+        savedOnly = null,
+        likedOnly = null,
+        dislikedOnly = null,
+        pageCursor = null
     ).cachedIn(viewModelScope)
-
     fun loadCommunity(){
         viewModelScope.launch {
             _community.value = repository.getCommunity(communityId.value, communityName.value)

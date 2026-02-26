@@ -13,19 +13,17 @@ class PostRepository(
     fun getPosts(
         type: String?,
         sort: String?,
-        timeRangeSeconds: String?,
         communityId: Int?,
         communityName: String?,
-        multiCommunityId: Int?,
-        multiCommunityName: String?,
         showHidden: Boolean?,
         showRead: Boolean?,
         showNsfw: Boolean?,
-        hideMedia: Boolean?,
-        markAsRead: Boolean?,
-        noCommentsOnly: Boolean?,
-        limit: Int?
-    ): Flow<PagingData<PostItem>> =
+        limit: Int?,
+        savedOnly: Boolean?,
+        likedOnly: Boolean?,
+        dislikedOnly: Boolean?,
+        pageCursor: String?
+    ): Flow<PagingData<PostView>> =
         Pager(
             config = PagingConfig(
                 pageSize = 20,
@@ -36,18 +34,16 @@ class PostRepository(
                     api = api,
                     type = type,
                     sort = sort,
-                    timeRangeSeconds = timeRangeSeconds,
+                    limit = limit,
                     communityId = communityId,
                     communityName = communityName,
-                    multiCommunityId = multiCommunityId,
-                    multiCommunityName = multiCommunityName,
+                    savedOnly = savedOnly,
+                    likedOnly = likedOnly,
+                    dislikedOnly = dislikedOnly,
                     showHidden = showHidden,
                     showRead = showRead,
                     showNsfw = showNsfw,
-                    hideMedia = hideMedia,
-                    markAsRead = markAsRead,
-                    noCommentsOnly = noCommentsOnly,
-                    limit = limit,
+                    pageCursor = pageCursor
                 )
             }
         ).flow

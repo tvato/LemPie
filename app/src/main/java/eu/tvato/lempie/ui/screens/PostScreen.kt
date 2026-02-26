@@ -7,22 +7,26 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
+import eu.tvato.lempie.comment.CommentView
 import eu.tvato.lempie.comment.CommentViewModel
-import eu.tvato.lempie.community.Community
+import eu.tvato.lempie.comment.CommentsHolder
 import eu.tvato.lempie.post.PostViewModel
 import eu.tvato.lempie.ui.components.CommentRow
 import eu.tvato.lempie.ui.components.PostCard
+import eu.tvato.lempie.ui.previewdata.previewCommentViews
 import eu.tvato.lempie.ui.previewdata.previewComments
-import eu.tvato.lempie.ui.previewdata.previewPosts
+import eu.tvato.lempie.ui.previewdata.previewPostViews
 import eu.tvato.lempie.ui.previewdata.previewUsers
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.ui.theme.Theme
+import kotlin.collections.sortedBy
 
 @Composable
 fun PostScreen(
@@ -39,6 +43,8 @@ fun PostScreen(
     commentViewModel.setPostId(postId)
     val comments = commentViewModel.comments.collectAsLazyPagingItems()
     val postView = postViewModel.postDetail.collectAsState()
+
+    val commentList = CommentsHolder.getComments()
     LazyColumn(
         modifier = modifier.fillMaxSize()
             .background(MaterialTheme.colorScheme.primaryContainer),
@@ -46,20 +52,20 @@ fun PostScreen(
     ) {
         item {
             PostCard(
-                post = postView.value?.post,
+                post = postView.value,
                 user = postView.value?.creator,
                 community = postView.value?.community,
                 navController = navController
             )
         }
-        if(comments.itemCount > 0) items(
-            count = comments.itemCount,
-            key = { index -> comments[index]?.comment?.id ?: index }
+        if(commentList.isNotEmpty()) items(
+            count = commentList.size,
+            key = { index -> commentList[index].comment.id }
         ){ index ->
             CommentRow(
-                comment = comments[index]?.comment,
-                username = comments[index]?.creator?.displayName ?: comments[index]?.creator?.name.toString(),
-                userInstance = comments[index]?.creator?.url.toString()
+                comment = commentList[index],
+                username = commentList[index].creator.displayName ?: commentList[index].creator.name,
+                userInstance = commentList[index].creator.actorId
             )
         }
     }
@@ -78,18 +84,9 @@ fun PostScreenPreviewDark(
         ) {
             item {
                 PostCard(
-                    post = previewPosts[1],
-                    user = previewUsers[0],
-                    community = Community(
-                        id = 1, name = "Test Community", title = "Test Community", description = "null",
-                        isRemoved = false, published = "Jan 22, 2026, 12:21", updated = null,
-                        isDeleted = false, isNsfw = false, url = "some.url", isLocal = false,
-                        postingRestrictedToMods = false, instanceId = 1, visibility = "",
-                        summary = null, subscriberCount = 1, postCount = 1, commentCount = 2, activeUsersDay = 1,
-                        activeUsersWeek = 1, activeUsersMonth = 1, activeUsersHalfYear = 1,
-                        localSubscriberCount = 1, reportCount = 0, unresolvedReportCount = 0,
-                        isLocalRemoved = false, iconUrl = null, bannerUrl = null
-                    ),
+                    post = previewPostViews[1],
+                    user = previewPostViews[1].creator,
+                    community = previewPostViews[1].community,
                     navController = navController
                 )
             }
@@ -98,9 +95,9 @@ fun PostScreenPreviewDark(
                 key = { index -> previewComments[index].id }
             ) { index ->
                 CommentRow(
-                    comment = previewComments[index],
+                    comment = previewCommentViews[index],
                     username = previewUsers[0].displayName ?: previewUsers[0].name,
-                    userInstance = previewUsers[0].url,
+                    userInstance = previewUsers[0].actorId,
                     modifier = modifier.background(MaterialTheme.colorScheme.primaryContainer)
                 )
             }
@@ -121,18 +118,9 @@ fun PostScreenPreviewLight(
         ) {
             item {
                 PostCard(
-                    post = previewPosts[0],
-                    user = previewUsers[0],
-                    community = Community(
-                        id = 1, name = "Test Community", title = "Test Community", description = "null",
-                        isRemoved = false, published = "Jan 22, 2026, 12:21", updated = null,
-                        isDeleted = false, isNsfw = false, url = "some.url", isLocal = false,
-                        postingRestrictedToMods = false, instanceId = 1, visibility = "",
-                        summary = null, subscriberCount = 1, postCount = 1, commentCount = 2, activeUsersDay = 1,
-                        activeUsersWeek = 1, activeUsersMonth = 1, activeUsersHalfYear = 1,
-                        localSubscriberCount = 1, reportCount = 0, unresolvedReportCount = 0,
-                        isLocalRemoved = false, iconUrl = null, bannerUrl = null
-                    ),
+                    post = previewPostViews[0],
+                    user = previewPostViews[0].creator,
+                    community = previewPostViews[0].community,
                     navController = navController
                 )
             }
@@ -141,9 +129,9 @@ fun PostScreenPreviewLight(
                 key = { index -> previewComments[index].id }
             ) { index ->
                 CommentRow(
-                    comment = previewComments[index],
+                    comment = previewCommentViews[index],
                     username = previewUsers[0].displayName ?: previewUsers[0].name,
-                    userInstance = previewUsers[0].url,
+                    userInstance = previewUsers[0].actorId,
                     modifier = modifier.background(MaterialTheme.colorScheme.primaryContainer)
                 )
             }
@@ -164,18 +152,9 @@ fun PostScreenPreviewDarkGen(
         ) {
             item {
                 PostCard(
-                    post = previewPosts[0],
-                    user = previewUsers[0],
-                    community = Community(
-                        id = 1, name = "Test Community", title = "Test Community", description = "null",
-                        isRemoved = false, published = "Jan 22, 2026, 12:21", updated = null,
-                        isDeleted = false, isNsfw = false, url = "some.url", isLocal = false,
-                        postingRestrictedToMods = false, instanceId = 1, visibility = "",
-                        summary = null, subscriberCount = 1, postCount = 1, commentCount = 2, activeUsersDay = 1,
-                        activeUsersWeek = 1, activeUsersMonth = 1, activeUsersHalfYear = 1,
-                        localSubscriberCount = 1, reportCount = 0, unresolvedReportCount = 0,
-                        isLocalRemoved = false, iconUrl = null, bannerUrl = null
-                    ),
+                    post = previewPostViews[0],
+                    user = previewPostViews[0].creator,
+                    community = previewPostViews[0].community,
                     navController = navController
                 )
             }
@@ -184,9 +163,9 @@ fun PostScreenPreviewDarkGen(
                 key = { index -> previewComments[index].id }
             ) { index ->
                 CommentRow(
-                    comment = previewComments[index],
+                    comment = previewCommentViews[index],
                     username = previewUsers[0].displayName ?: previewUsers[0].name,
-                    userInstance = previewUsers[0].url,
+                    userInstance = previewUsers[0].actorId,
                     modifier = modifier.background(MaterialTheme.colorScheme.primaryContainer)
                 )
             }

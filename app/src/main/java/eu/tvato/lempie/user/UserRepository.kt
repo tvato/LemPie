@@ -10,18 +10,14 @@ import kotlinx.coroutines.flow.Flow
 class UserRepository(
     private val api: API = RetrofitInstance.api
 ){
-    fun getUserContents(userId: Int, type: String): Flow<PagingData<ContentHolder>> =
+    fun getUser(userId: Int): Flow<PagingData<UserResponse>> =
         Pager(
             config = PagingConfig(
                 pageSize = 25,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {
-                UserContentPagingSource(api, userId, type)
+                UserPagingSource(api, userId)
             }
         ).flow
-
-    suspend fun getUserDetails(userId: Int?): UserDetailResponse {
-        return api.getUserDetail(userId = userId)
-    }
 }

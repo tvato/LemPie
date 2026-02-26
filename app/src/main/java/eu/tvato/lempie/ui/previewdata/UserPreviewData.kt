@@ -1,79 +1,60 @@
 package eu.tvato.lempie.ui.previewdata
 
-import eu.tvato.lempie.user.ContentHolder
+import eu.tvato.lempie.comment.CommentCounts
+import eu.tvato.lempie.comment.CommentView
+import eu.tvato.lempie.post.PostCounts
+import eu.tvato.lempie.post.PostView
 import eu.tvato.lempie.user.User
+import eu.tvato.lempie.user.UserCounts
+import eu.tvato.lempie.user.UserView
 
 val previewUsers = listOf(
     User(
         id = 1, name = "TestUser1", displayName = null, avatarUrl = null, published = "Jun 12, 2025, 12:35",
-        updated = null, url = "https://some.site.fi/u/testuser1", bio = null, isLocal = false, bannerUrl = null,
-        isDeleted = false, matrixUserId = null, isBotAccount = false, instanceId = 1,
-        postCount = 1, commentCount = 1
+        updated = null, bio = null, isLocal = false, bannerUrl = null, isDeleted = false, matrixUserId = null,
+        isBotAccount = false, instanceId = 1, actorId = "https://some.site.fi/u/testuser1", banExpires = ""
     ),
     User(
         id = 2, name = "User2Test", displayName = null, avatarUrl = null, published = "",
-        updated = null, url = "https://one.more.com/u/user2test", bio = null, isLocal = false, bannerUrl = null,
-        isDeleted = false, matrixUserId = null, isBotAccount = false, instanceId = 1,
-        postCount = 1, commentCount = 1
+        updated = null, bio = null, isLocal = false, bannerUrl = null, isDeleted = false, matrixUserId = null,
+        isBotAccount = false, instanceId = 1, actorId = "https://one.more.com/u/user2test", banExpires = ""
     ),
     User(
         id = 3, name = "3TestUser", displayName = null, avatarUrl = null, published = "",
-        updated = null, url = "https://lemmy.world/u/3TestUser", bio = null, isLocal = false, bannerUrl = null,
-        isDeleted = false, matrixUserId = null, isBotAccount = false, instanceId = 1,
-        postCount = 1, commentCount = 1
+        updated = null, bio = null, isLocal = false, bannerUrl = null, isDeleted = false, matrixUserId = null,
+        isBotAccount = false, instanceId = 1, actorId = "https://lemmy.world/u/3TestUser", banExpires = ""
     ),
 )
 
-val userPreviewContents = listOf(
-    ContentHolder.CommentContent(
-        comment = previewComments[0], creator = previewUsers[0], post = previewPosts[0], community = previewCommunities[0], communityActions = null,
-        commentActions = null, personActions = null, creatorIsAdmin = false, tags = listOf(),
-        canMod = false, creatorBanned = false, creatorBandExpires = null, creatorIsMod = false,
-        creatorBannedFromCommunity = false, creatorCommunityBanExpires = null, type = "comment"
+val previewUserViews = listOf(
+    UserView(
+        user = previewUsers[0],
+        counts = UserCounts(1, 22, 32),
+        isAdmin = false,
     ),
-    ContentHolder.PostItem(
+    UserView(
+        user = previewUsers[1],
+        counts = UserCounts(2, 14, 2),
+        isAdmin = false,
+    ),
+    UserView(
+        user = previewUsers[2],
+        counts = UserCounts(3, 5, 11),
+        isAdmin = false,
+    ),
+)
+
+val previewUserContents = listOf(
+    PostView(
         post = previewPosts[0], creator = previewUsers[0], community = previewCommunities[0], imageDetails = null,
-        communityActions = null, personActions = null, postActions = null,
-        creatorIsAdmin = false, tags = listOf(), canMod = false, creatorIsBanned = false,
-        banExpires = null, creatorIsMod = false, creatorBannedFromCommunity = false,
-        communityBanExpires = null, type = "post"
+        creatorBannedFromCommunity = false, bannedFromCommunity = false, creatorIsMod = false, creatorIsAdmin = false,
+        counts = PostCounts(postId = 1, commentCount = 2, score = 4, upvotes = 2, downvotes = 1, published = "", newestCommentTime = ""),
+        subscribed = "", isSaved = false, isRead = false, isHidden = false, creatorBlocked = false, myVote = null, unreadComments = 0
     ),
-    ContentHolder.CommentContent(
-        comment = previewComments[1], creator = previewUsers[0], post = previewPosts[0], community = previewCommunities[0], communityActions = null,
-        commentActions = null, personActions = null, creatorIsAdmin = false, tags = listOf(),
-        canMod = false, creatorBanned = false, creatorBandExpires = null, creatorIsMod = false,
-        creatorBannedFromCommunity = false, creatorCommunityBanExpires = null, type = "comment"
-    ),
-    ContentHolder.CommentContent(
-        comment = previewComments[2], creator = previewUsers[0], post = previewPosts[0], community = previewCommunities[0], communityActions = null,
-        commentActions = null, personActions = null, creatorIsAdmin = false, tags = listOf(),
-        canMod = false, creatorBanned = false, creatorBandExpires = null, creatorIsMod = false,
-        creatorBannedFromCommunity = false, creatorCommunityBanExpires = null, type = "comment"
-    ),
-    ContentHolder.CommentContent(
-        comment = previewComments[3], creator = previewUsers[0], post = previewPosts[0], community = previewCommunities[0], communityActions = null,
-        commentActions = null, personActions = null, creatorIsAdmin = false, tags = listOf(),
-        canMod = false, creatorBanned = false, creatorBandExpires = null, creatorIsMod = false,
-        creatorBannedFromCommunity = false, creatorCommunityBanExpires = null, type = "comment"
-    ),
-    ContentHolder.CommentContent(
-        comment = previewComments[4], creator = previewUsers[0], post = previewPosts[0], community = previewCommunities[0], communityActions = null,
-        commentActions = null, personActions = null, creatorIsAdmin = false, tags = listOf(),
-        canMod = false, creatorBanned = false, creatorBandExpires = null, creatorIsMod = false,
-        creatorBannedFromCommunity = false, creatorCommunityBanExpires = null, type = "comment"
-    ),
-    ContentHolder.PostItem(
-        post = previewPosts[1], creator = previewUsers[0], community = previewCommunities[0], imageDetails = null,
-        communityActions = null, personActions = null, postActions = null,
-        creatorIsAdmin = false, tags = listOf(), canMod = false, creatorIsBanned = false,
-        banExpires = null, creatorIsMod = false, creatorBannedFromCommunity = false,
-        communityBanExpires = null, type = "post"
-    ),
-    ContentHolder.PostItem(
-        post = previewPosts[2], creator = previewUsers[0], community = previewCommunities[0], imageDetails = null,
-        communityActions = null, personActions = null, postActions = null,
-        creatorIsAdmin = false, tags = listOf(), canMod = false, creatorIsBanned = false,
-        banExpires = null, creatorIsMod = false, creatorBannedFromCommunity = false,
-        communityBanExpires = null, type = "post"
-    ),
+    CommentView(
+        comment = previewComments[0], creator = previewUsers[0], post = previewPosts[1], community = previewCommunities[1],
+        counts = CommentCounts(postId = 1, score = 3, upvotes = 4, downvotes = 1, published = "", childCounts = 0),
+        creatorBannedFromCommunity = false, bannedFromCommunity = false, creatorIsMod = false, creatorIsAdmin = false,
+        subscribed = "", isSaved = false, creatorBlocked = false, myVote = 0
+    )
 )

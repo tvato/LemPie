@@ -19,7 +19,7 @@ class CommentViewModel(
     val postId: StateFlow<Int?> = _postId.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val comments: Flow<PagingData<CommentItem>> = _postId.filterNotNull().flatMapLatest { id ->
+    val comments: Flow<PagingData<CommentView>> = _postId.filterNotNull().flatMapLatest { id ->
         repository.getCommentsByPostId(id)
     }.cachedIn(viewModelScope)
 

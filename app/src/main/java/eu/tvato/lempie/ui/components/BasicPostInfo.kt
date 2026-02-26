@@ -34,16 +34,16 @@ fun BasicPostInfo(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ){
-    val communityUrl = if(community?.url.toString().split("/").size > 1) {
-        community?.url.toString().split("/")[2]
+    val communityUrl = if(community?.actorId.toString().split("/").size > 1) {
+        community?.actorId.toString().split("/")[2]
     } else {
-        community?.url.toString()
+        community?.actorId.toString()
     }
 
-    val userUrl = if(user?.url.toString().split("/").size > 1) {
-        user?.url.toString().split("/")[2]
+    val userUrl = if(user?.actorId.toString().split("/").size > 1) {
+        user?.actorId.toString().split("/")[2]
     } else {
-        user?.url.toString()
+        user?.actorId.toString()
     }
 
     Row(

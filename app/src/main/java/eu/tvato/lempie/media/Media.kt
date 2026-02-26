@@ -6,6 +6,5 @@ data class ImageDetails(
     @SerializedName("link")            val link: String,
     @SerializedName("width")           val width: Int,
     @SerializedName("height")          val height: Int,
-    @SerializedName("content_type")    val contentType: String,
-    @SerializedName("blurhash")        val blurhash: String?,
+    @SerializedName("content_type")    val contentType: String
 )
