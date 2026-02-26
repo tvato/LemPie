@@ -119,7 +119,7 @@ fun HomeScreen(
             }
         }
         composable(
-            route = "User/{userId}",
+            route = "Selected/{userId}",
             arguments = listOf(navArgument("userId") { type = NavType.IntType })
         ){ backStack ->
             val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())

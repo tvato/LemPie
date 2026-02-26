@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import eu.tvato.lempie.R
 import eu.tvato.lempie.comment.Comment
+import eu.tvato.lempie.utils.parseIsoDate
 
 @Composable
 fun CommentRow(
@@ -46,7 +47,7 @@ fun CommentRow(
                 color = MaterialTheme.colorScheme.secondary
             )
             Text(
-                text = comment?.published.toString(),
+                text = parseIsoDate(comment?.published),
                 color = MaterialTheme.colorScheme.tertiary
             )
         }
@@ -124,7 +125,7 @@ fun UserComment(
                 color = MaterialTheme.colorScheme.secondary
             )
             Text(
-                text = comment?.published.toString(),
+                text = parseIsoDate(comment?.published),
                 color = MaterialTheme.colorScheme.tertiary
             )
         }

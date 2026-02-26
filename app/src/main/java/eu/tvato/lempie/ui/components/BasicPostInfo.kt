@@ -74,7 +74,7 @@ fun BasicPostInfo(
                 text = "${user?.displayName ?: user?.name.toString()}@${userUrl}",
                 color = MaterialTheme.colorScheme.secondary,
                 modifier = modifier.clickable(onClick = {
-                    navController.navigate("User/${user?.id}")
+                    navController.navigate("Selected/${user?.id}")
                 })
             )
         }

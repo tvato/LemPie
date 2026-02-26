@@ -37,7 +37,7 @@ fun Tag(
 @PreviewLightDark
 @Composable
 fun TagPreview(){
-    LemPieTheme() {
+    LemPieTheme {
         Tag(text = "TEST")
     }
 }

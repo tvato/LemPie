@@ -1,6 +1,5 @@
 package eu.tvato.lempie.ui.components
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +30,7 @@ import eu.tvato.lempie.ui.previewdata.previewPosts
 import eu.tvato.lempie.ui.previewdata.previewUsers
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.user.User
+import eu.tvato.lempie.utils.parseIsoDate
 
 @Composable
 fun PostCard(
@@ -135,7 +135,7 @@ fun TagAndDateRow(post: Post?, modifier: Modifier = Modifier){
             }
         )
         Text(
-            text = post?.published.toString(),
+            text = parseIsoDate(post?.published),
             color = MaterialTheme.colorScheme.tertiary
         )
     }
@@ -183,7 +183,7 @@ fun ButtonsRow(post: Post?, modifier: Modifier = Modifier){
 @PreviewLightDark
 @Composable
 fun PostCardPreview() {
-    LemPieTheme() {
+    LemPieTheme {
         PostCard(
             post = previewPosts[1],
             community = Community(
