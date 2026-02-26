@@ -5,7 +5,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import eu.tvato.lempie.api.API
 import eu.tvato.lempie.api.RetrofitInstance
-import eu.tvato.lempie.utils.parseIsoDate
 import kotlinx.coroutines.flow.Flow
 
 class UserRepository(
@@ -23,13 +22,6 @@ class UserRepository(
         ).flow
 
     suspend fun getUserDetails(userId: Int?): UserDetailResponse {
-        val response = api.getUserDetail(userId = userId)
-        return response.copy(
-            user = response.user.copy(
-                user = response.user.user.copy(
-                    published = parseIsoDate(response.user.user.published)
-                )
-            )
-        )
+        return api.getUserDetail(userId = userId)
     }
 }

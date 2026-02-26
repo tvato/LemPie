@@ -1,7 +1,6 @@
 package eu.tvato.lempie
 
 import eu.tvato.lempie.utils.parseIsoDate
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 

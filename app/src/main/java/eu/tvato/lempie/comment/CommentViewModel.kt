@@ -13,11 +13,10 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 
 class CommentViewModel(
-    private val repository: CommentRepository = CommentRepository()
+    private val repository: CommentRepository = CommentRepository(),
 ): ViewModel() {
     private val _postId = MutableStateFlow<Int?>(null)
     val postId: StateFlow<Int?> = _postId.asStateFlow()
-
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val comments: Flow<PagingData<CommentItem>> = _postId.filterNotNull().flatMapLatest { id ->

@@ -3,7 +3,6 @@ package eu.tvato.lempie.post
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import eu.tvato.lempie.api.API
-import eu.tvato.lempie.utils.parseIsoDate
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -43,15 +42,9 @@ class PostPagingSource(
                 limit = limit,
                 page = params.key
             )
-            val parsedDateItems = response.items.map { item ->
-                item.copy(
-                    post = item.post.copy(
-                        published = parseIsoDate(item.post.published)
-                    )
-                )
-            }
+
             LoadResult.Page(
-                data = parsedDateItems,
+                data = response.items.map { it },
                 prevKey = response.prevPage,
                 nextKey = if(response.nextPage != params.key) response.nextPage else null
             )

@@ -1,5 +1,6 @@
 package eu.tvato.lempie.api
 
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
@@ -26,7 +27,7 @@ object RetrofitInstance {
         .build()
     // End of logging stuff
 
-    val gson = GsonBuilder()
+    val gson: Gson = GsonBuilder()
         .registerTypeAdapter(ContentHolder::class.java, UserContentDeserializer())
         .create()
 

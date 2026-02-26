@@ -5,7 +5,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import eu.tvato.lempie.api.API
 import eu.tvato.lempie.api.RetrofitInstance
-import eu.tvato.lempie.utils.parseIsoDate
 import kotlinx.coroutines.flow.Flow
 
 class PostRepository(
@@ -58,10 +57,6 @@ class PostRepository(
         commentId: Int?
     ): PostView {
         val response = api.getPost(postId = postId, commentId = commentId)
-        return response.postView.copy(
-            post = response.postView.post.copy(
-                published = parseIsoDate(response.postView.post.published)
-            )
-        )
+        return response.postView
     }
 }

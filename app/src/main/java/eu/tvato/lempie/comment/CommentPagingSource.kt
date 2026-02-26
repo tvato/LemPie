@@ -3,7 +3,6 @@ package eu.tvato.lempie.comment
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import eu.tvato.lempie.api.API
-import eu.tvato.lempie.utils.parseIsoDate
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -14,7 +13,7 @@ class CommentPagingSource(
     override suspend fun load(params: LoadParams<String>): LoadResult<String, CommentItem> {
         return try{
             val response = api.getCommentsByPostId(postId = postId, page = params.key)
-            val parsedItems = sortAndParse(response)
+            val parsedItems = response.items.sortedBy{ it.comment.path.split(".").size }.sortedBy { it.comment.path.split(".")[1] }
             LoadResult.Page(
                 data = parsedItems,
                 prevKey = response.prevPage,
@@ -32,15 +31,5 @@ class CommentPagingSource(
             state.closestPageToPosition(anchorPosition)?.nextKey
                 ?: state.closestPageToPosition(anchorPosition)?.prevKey
         }
-    }
-
-    private fun sortAndParse(response: CommentResponse): List<CommentItem> {
-        return response.items.map { item ->
-            item.copy(
-                comment = item.comment.copy(
-                    published = parseIsoDate(item.comment.published)
-                )
-            )
-        }.sortedBy{ it.comment.path.split(".").size }.sortedBy { it.comment.path.split(".")[1] }
     }
 }

@@ -9,6 +9,8 @@ import eu.tvato.lempie.user.UserDetailResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+// TODO() v3...
+
 interface API {
     @GET("api/v4/post/list")
     suspend fun getPosts(
