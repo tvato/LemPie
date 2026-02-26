@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import eu.tvato.lempie.LempieApplication
 import eu.tvato.lempie.database.datetimeformat.DateTimeFormat
 import eu.tvato.lempie.database.datetimeformat.DateTimeFormatDao
 import eu.tvato.lempie.database.settings.SettingsDao
