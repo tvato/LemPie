@@ -2,7 +2,7 @@ package eu.tvato.lempie.utils
 
 import eu.tvato.lempie.comment.CommentView
 
-object ThisShouldWork{
+object CommentUtils{
     private val comments: MutableList<CommentView> = mutableListOf()
     fun isDepth(comment: CommentView, depth: Int): Boolean {
         return comment.comment.path.split(".").size == depth
