@@ -1,7 +1,6 @@
 package eu.tvato.lempie.utils
 
 import android.content.Context
-import android.util.Log
 import eu.tvato.lempie.database.LempieDatabase
 import eu.tvato.lempie.database.settings.Settings
 import kotlinx.coroutines.flow.filterNotNull
@@ -11,7 +10,6 @@ object CurrentSettings {
     private var settings: Settings? = null
 
     suspend fun initialize(userId: Int, context: Context){
-        Log.d("dd", "Initializing CurrentSettings...")
         val db = LempieDatabase.getDatabase(context)
         settings = db.settingsDao().getUserSettings(userId).filterNotNull().first()
     }
