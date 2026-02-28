@@ -1,7 +1,6 @@
 package eu.tvato.lempie
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -32,7 +31,6 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         lifecycleScope.launch { CurrentSettings.initialize(1, LempieApplication.appContext) }
         setContent {
-            Log.d("dd", "Migrating to api/v3... Try 10")
             LemPieTheme(theme = Theme.Dark){
                 HomeScreen(
                     modifier = Modifier
