@@ -7,13 +7,13 @@ import eu.tvato.lempie.community.CommunityView
 val previewCommunities = listOf(
     Community(
         id = 1, name = "Test Community 1", title = "Test community 1", description = null,
-        isRemoved = false, published = "Jan 11, 2026, 12:23", updated = null, isDeleted = false,
+        isRemoved = false, published = "2022-07-09T17:56:21.988295Z", updated = null, isDeleted = false,
         isNsfw = false, actorId = "https://voyager.lemmy.ml/c/test_comm_1", isLocal = false, iconUrl = null, bannerUrl = null,
         postingRestrictedToMods = false, instanceId = 1, visibility = "", isHidden = false
     ),
     Community(
         id = 2, name = "Test Community 2", title = "Test community 2", description = null,
-        isRemoved = false, published = "Jan 11, 2026, 12:23", updated = null, isDeleted = false,
+        isRemoved = false, published = "2022-07-09T17:56:21.988295Z", updated = null, isDeleted = false,
         isNsfw = false, actorId = "", isLocal = false, iconUrl = null, bannerUrl = null,
         postingRestrictedToMods = false, instanceId = 1, visibility = "", isHidden = false,
     )

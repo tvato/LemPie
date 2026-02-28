@@ -7,16 +7,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
-import eu.tvato.lempie.comment.CommentView
 import eu.tvato.lempie.comment.CommentViewModel
-import eu.tvato.lempie.comment.CommentsHolder
+import eu.tvato.lempie.utils.CommentUtils
 import eu.tvato.lempie.post.PostViewModel
 import eu.tvato.lempie.ui.components.CommentRow
 import eu.tvato.lempie.ui.components.PostCard
@@ -26,7 +24,6 @@ import eu.tvato.lempie.ui.previewdata.previewPostViews
 import eu.tvato.lempie.ui.previewdata.previewUsers
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.ui.theme.Theme
-import kotlin.collections.sortedBy
 
 @Composable
 fun PostScreen(
@@ -41,10 +38,13 @@ fun PostScreen(
     postViewModel.setPostId(postId)
     postViewModel.loadPostDetails()
     commentViewModel.setPostId(postId)
-    val comments = commentViewModel.comments.collectAsLazyPagingItems()
+
+    // This needs to be called to get the comments
+    commentViewModel.comments.collectAsLazyPagingItems()
     val postView = postViewModel.postDetail.collectAsState()
 
-    val commentList = CommentsHolder.getComments()
+    // CommentUtils is just a workaround to get comments in a sorted manner
+    val commentList = CommentUtils.getComments()
     LazyColumn(
         modifier = modifier.fillMaxSize()
             .background(MaterialTheme.colorScheme.primaryContainer),
@@ -91,14 +91,13 @@ fun PostScreenPreviewDark(
                 )
             }
             items(
-                count = previewComments.size,
+                count = previewCommentViews.size,
                 key = { index -> previewComments[index].id }
             ) { index ->
                 CommentRow(
                     comment = previewCommentViews[index],
-                    username = previewUsers[0].displayName ?: previewUsers[0].name,
-                    userInstance = previewUsers[0].actorId,
-                    modifier = modifier.background(MaterialTheme.colorScheme.primaryContainer)
+                    username = previewCommentViews[index].creator.displayName ?: previewCommentViews[index].creator.name,
+                    userInstance = previewCommentViews[index].creator.actorId
                 )
             }
         }
@@ -159,8 +158,8 @@ fun PostScreenPreviewDarkGen(
                 )
             }
             items(
-                count = previewComments.size,
-                key = { index -> previewComments[index].id }
+                count = previewCommentViews.size,
+                key = { index -> previewCommentViews[index].comment.id }
             ) { index ->
                 CommentRow(
                     comment = previewCommentViews[index],

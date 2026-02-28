@@ -18,7 +18,7 @@ val previewPosts: List<Post> = listOf(
                 "\n" +
                 "Nulla consectetur lacus est, sed pulvinar enim aliquet sed. Vestibulum efficitur hendrerit felis, in rhoncus turpis lobortis sit amet. Curabitur pulvinar nisl a arcu commodo tristique vel eu nisi. Aenean hendrerit elementum quam, eu interdum diam blandit sit amet. Quisque aliquet sodales lectus. Mauris sed tortor eu felis faucibus aliquet. Fusce neque nibh, fringilla et aliquam non, imperdiet vel nunc. Praesent sodales sagittis felis in tincidunt. Cras eget dolor a orci finibus tempor. ",
         userId = 1, communityId = 1, isRemoved = false,
-        isLocked = false, published = "Jan 17, 2026, 11:11", updated = null,
+        isLocked = false, published = "2022-07-09T17:56:21.988295Z", updated = null,
         isDeleted = false, isNfsw = false, embedTitle = null,
         embedDescription = null, thumbnailUrl = null, postLink = "",
         isLocal = false, embedVideoUrl = null, languageId = 1,
@@ -26,7 +26,7 @@ val previewPosts: List<Post> = listOf(
         urlContentType = "text/html", altText = null),
     Post(id = 2, title = "Preview title 2", imageOrLink = "https://www.example.com/",
         text = null, userId = 1, communityId = 1, isRemoved = false,
-        isLocked = false, published = "Jan 17, 2026, 11:11", updated = null,
+        isLocked = false, published = "2022-07-09T17:56:21.988295Z", updated = null,
         isDeleted = false, isNfsw = false, embedTitle = null,
         embedDescription = null, thumbnailUrl = null, postLink = "",
         isLocal = false, embedVideoUrl = null, languageId = 1,
@@ -34,7 +34,7 @@ val previewPosts: List<Post> = listOf(
         urlContentType = "text/link", altText = null),
     Post(id = 3, title = "Preview title 3", imageOrLink = "https://something.com",
         text = null, userId = 1, communityId = 1, isRemoved = false,
-        isLocked = false, published = "Jan 17, 2026, 11:11", updated = null,
+        isLocked = false, published = "2022-07-09T17:56:21.988295Z", updated = null,
         isDeleted = false, isNfsw = false, embedTitle = null,
         embedDescription = null, thumbnailUrl = null, postLink = "",
         isLocal = false, embedVideoUrl = null, languageId = 1,
@@ -42,7 +42,7 @@ val previewPosts: List<Post> = listOf(
         urlContentType = null, altText = null),
     Post(id = 4, title = "Preview title 4", imageOrLink = "https://www.morefakewebsites.com",
         text = "askljdjaslkd ajsldkaj sdlkasj dlaksjd alskd aslkdjaslkdaj sldkasj dlaksjd alksdja sldkajs dlkasjd laksdja lskdja sldkasj dlaksdj alskdja slkdjas dlkasjd laskjd alskdj aslkdjas dlkasjd", userId = 1, communityId = 1, isRemoved = false,
-        isLocked = false, published = "Jan 17, 2026, 11:11", updated = null,
+        isLocked = false, published = "2022-07-09T17:56:21.988295Z", updated = null,
         isDeleted = false, isNfsw = false, embedTitle = null,
         embedDescription = null, thumbnailUrl = null, postLink = "",
         isLocal = false, embedVideoUrl = null, languageId = 1,
@@ -54,25 +54,25 @@ val previewPostViews = listOf(
     PostView(
         post = previewPosts[0], creator = previewUsers[0], community = previewCommunities[0], imageDetails = null,
         creatorBannedFromCommunity = false, bannedFromCommunity = false, creatorIsMod = false, creatorIsAdmin = false,
-        counts = PostCounts(postId = 1, commentCount = 23, score = 22, upvotes = 30, downvotes = 8, published = "", newestCommentTime = ""),
+        counts = PostCounts(postId = 1, commentCount = 23, score = 22, upvotes = 30, downvotes = 8, published = "2022-07-09T17:56:21.988295Z", newestCommentTime = ""),
         subscribed = "", isSaved = false, isRead = false, isHidden = false, creatorBlocked = false, myVote = null, unreadComments = 0
     ),
     PostView(
-        post = previewPosts[1], creator = previewUsers[1], community = previewCommunities[1], imageDetails = null,
+        post = previewPosts[1], creator = previewUsers[1], community = previewCommunities[0], imageDetails = null,
         creatorBannedFromCommunity = false, bannedFromCommunity = false, creatorIsMod = false, creatorIsAdmin = false,
-        counts = PostCounts(postId = 1, commentCount = 23, score = 22, upvotes = 30, downvotes = 8, published = "", newestCommentTime = ""),
+        counts = PostCounts(postId = 1, commentCount = 23, score = 22, upvotes = 30, downvotes = 8, published = "2022-07-09T17:56:21.988295Z", newestCommentTime = ""),
         subscribed = "", isSaved = false, isRead = false, isHidden = false, creatorBlocked = false, myVote = null, unreadComments = 0
     ),
     PostView(
-        post = previewPosts[2], creator = previewUsers[2], community = previewCommunities[2], imageDetails = null,
+        post = previewPosts[2], creator = previewUsers[2], community = previewCommunities[1], imageDetails = null,
         creatorBannedFromCommunity = false, bannedFromCommunity = false, creatorIsMod = false, creatorIsAdmin = false,
-        counts = PostCounts(postId = 1, commentCount = 23, score = 22, upvotes = 30, downvotes = 8, published = "", newestCommentTime = ""),
+        counts = PostCounts(postId = 1, commentCount = 23, score = 22, upvotes = 30, downvotes = 8, published = "2022-07-09T17:56:21.988295Z", newestCommentTime = ""),
         subscribed = "", isSaved = false, isRead = false, isHidden = false, creatorBlocked = false, myVote = null, unreadComments = 0
     ),
     PostView(
-        post = previewPosts[3], creator = previewUsers[3], community = previewCommunities[3], imageDetails = null,
+        post = previewPosts[3], creator = previewUsers[2], community = previewCommunities[1], imageDetails = null,
         creatorBannedFromCommunity = false, bannedFromCommunity = false, creatorIsMod = false, creatorIsAdmin = false,
-        counts = PostCounts(postId = 1, commentCount = 23, score = 22, upvotes = 30, downvotes = 8, published = "", newestCommentTime = ""),
+        counts = PostCounts(postId = 1, commentCount = 23, score = 22, upvotes = 30, downvotes = 8, published = "2022-07-09T17:56:21.988295Z", newestCommentTime = ""),
         subscribed = "", isSaved = false, isRead = false, isHidden = false, creatorBlocked = false, myVote = null, unreadComments = 0
     ),
 )

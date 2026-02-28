@@ -7,39 +7,45 @@ import eu.tvato.lempie.comment.CommentView
 val previewComments = listOf(
     Comment(
         id = 5, userId = 3, postId = 1, content = "Comment 5",
-        isRemoved = false, published = "Jan 20, 2026, 07:58", updated = null,
+        isRemoved = false, published = "2022-07-09T17:56:21.988295Z", updated = null,
         isDeleted = false, commentLink = "null", isLocal = false, path = "0.2.3.5",
         isDistinguished = false, languageId = 1
     ),
     Comment(
         id = 3, userId = 2, postId = 1, content = "Comment 3",
-        isRemoved = false, published = "Jan 19, 2026, 13:14", updated = null,
+        isRemoved = false, published = "2022-07-09T17:56:21.988295Z", updated = null,
         isDeleted = false, commentLink = "null", isLocal = false, path = "0.2.3",
         isDistinguished = false, languageId = 1
     ),
     Comment(
         id = 1, userId = 1, postId = 1, content = "Comment 1",
-        isRemoved = false, published = "Jan 19, 2026, 12:33", updated = null,
+        isRemoved = false, published = "2022-07-09T17:56:21.988295Z", updated = null,
         isDeleted = false, commentLink = "null", isLocal = false, path = "0.1",
         isDistinguished = false, languageId = 1
     ),
     Comment(
         id = 2, userId = 3, postId = 1, content = "Comment 2",
-        isRemoved = false, published = "Jan 19, 2026, 13:01", updated = null,
+        isRemoved = false, published = "2022-07-09T17:56:21.988295Z", updated = null,
         isDeleted = false, commentLink = "null", isLocal = false, path = "0.2",
         isDistinguished = false, languageId = 1
     ),
     Comment(
         id = 4, userId = 2, postId = 1, content = "Comment 4",
-        isRemoved = false, published = "Jan 20, 2026, 06:43", updated = null,
+        isRemoved = false, published = "2022-07-09T17:56:21.988295Z", updated = null,
         isDeleted = false, commentLink = "null", isLocal = false, path = "0.4",
         isDistinguished = false, languageId = 1
-    )
+    ),
+    Comment(
+        id = 6, userId = 3, postId = 1, content = "Comment 5",
+        isRemoved = false, published = "2022-07-09T17:56:21.988295Z", updated = null,
+        isDeleted = false, commentLink = "null", isLocal = false, path = "0.2.3.5.8.10.15.32",
+        isDistinguished = false, languageId = 1
+    ),
 )
 
 val previewCommentViews = listOf(
     CommentView(
-        comment = previewComments[0], creator = previewUsers[0], post = previewPosts[0], community = previewCommunities[0],
+        comment = previewComments[5], creator = previewUsers[0], post = previewPosts[0], community = previewCommunities[0],
         counts = CommentCounts(postId = 1, score = 12, upvotes = 15, downvotes = 3, published = "", childCounts = 0),
         creatorBannedFromCommunity = false, bannedFromCommunity = false, creatorIsMod = false, creatorIsAdmin = false,
         subscribed = "", isSaved = false, creatorBlocked = false, myVote = 0
@@ -68,4 +74,10 @@ val previewCommentViews = listOf(
         creatorBannedFromCommunity = false, bannedFromCommunity = false, creatorIsMod = false, creatorIsAdmin = false,
         subscribed = "", isSaved = false, creatorBlocked = false, myVote = 0
     ),
+    CommentView(
+        comment = previewComments[5], creator = previewUsers[0], post = previewPosts[0], community = previewCommunities[0],
+        counts = CommentCounts(postId = 1, score = 12, upvotes = 15, downvotes = 3, published = "", childCounts = 0),
+        creatorBannedFromCommunity = false, bannedFromCommunity = false, creatorIsMod = false, creatorIsAdmin = false,
+        subscribed = "", isSaved = false, creatorBlocked = false, myVote = 0
+    )
 )

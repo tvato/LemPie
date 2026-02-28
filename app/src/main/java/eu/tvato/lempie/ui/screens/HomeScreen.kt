@@ -25,6 +25,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.paging.compose.collectAsLazyPagingItems
+import eu.tvato.lempie.utils.CommentUtils
 import eu.tvato.lempie.post.PostViewModel
 import eu.tvato.lempie.ui.components.DrawerMenu
 import eu.tvato.lempie.ui.components.HomeTopBar
@@ -52,6 +53,7 @@ fun HomeScreen(
             val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
             val drawerState = rememberDrawerState(DrawerValue.Closed)
             val scope = rememberCoroutineScope()
+            CommentUtils.clearComments()
             BackHandler(enabled = drawerState.isOpen) {
                 scope.launch {
                     drawerState.close()
