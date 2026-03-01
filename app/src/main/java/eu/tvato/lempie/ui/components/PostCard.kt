@@ -84,16 +84,6 @@ fun PostCard(
             color = MaterialTheme.colorScheme.tertiary
         )
 
-        if(post?.post?.text?.isNotEmpty() ?: false && noText) {
-            Text(
-                text = post.post.text,
-                modifier = modifier.padding(start = 20.dp, top = 10.dp, end = 20.dp, bottom = 20.dp),
-                color = MaterialTheme.colorScheme.onBackground,
-                maxLines = if(limitTextRows) 5 else Int.MAX_VALUE,
-                overflow = if(limitTextRows) TextOverflow.Ellipsis else TextOverflow.Clip
-            )
-        }
-
         if(post?.post?.urlContentType?.contains("image") ?: false){
             AsyncImage(
                 model = post.post.imageOrLink,
@@ -111,6 +101,15 @@ fun PostCard(
                     .align(Alignment.CenterHorizontally)
                     .padding(start = 20.dp, top =10.dp, bottom = 10.dp, end = 20.dp)
                     .fillMaxHeight(0.5f)
+            )
+        }
+        if(post?.post?.text?.isNotEmpty() ?: false && !noText) {
+            Text(
+                text = post.post.text,
+                modifier = modifier.padding(start = 20.dp, top = 10.dp, end = 20.dp, bottom = 20.dp),
+                color = MaterialTheme.colorScheme.onBackground,
+                maxLines = if(limitTextRows) 5 else Int.MAX_VALUE,
+                overflow = if(limitTextRows) TextOverflow.Ellipsis else TextOverflow.Clip
             )
         }
 
@@ -188,9 +187,9 @@ fun ButtonsRow(post: PostView?, modifier: Modifier = Modifier){
 fun PostCardPreview() {
     LemPieTheme {
         PostCard(
-            post = previewPostViews[1],
-            community = previewPostViews[1].community,
-            user = previewPostViews[1].creator,
+            post = previewPostViews[2],
+            community = previewPostViews[2].community,
+            user = previewPostViews[2].creator,
             navController = rememberNavController()
         )
     }
