@@ -43,7 +43,7 @@ fun PostScreen(
     commentViewModel.comments.collectAsLazyPagingItems()
     val postView = postViewModel.postDetail.collectAsState()
 
-    // CommentUtils is just a workaround to get comments in a sorted manner
+    // CommentUtils is just a workaround to get comments in a sorted manner. Possible TODO()
     val commentList = CommentUtils.getComments()
     LazyColumn(
         modifier = modifier.fillMaxSize()
@@ -92,7 +92,7 @@ fun PostScreenPreviewDark(
             }
             items(
                 count = previewCommentViews.size,
-                key = { index -> previewComments[index].id }
+                key = { index -> previewCommentViews[index].comment.id }
             ) { index ->
                 CommentRow(
                     comment = previewCommentViews[index],
@@ -124,13 +124,13 @@ fun PostScreenPreviewLight(
                 )
             }
             items(
-                count = previewComments.size,
-                key = { index -> previewComments[index].id }
+                count = previewCommentViews.size,
+                key = { index -> previewCommentViews[index].comment.id }
             ) { index ->
                 CommentRow(
                     comment = previewCommentViews[index],
-                    username = previewUsers[0].displayName ?: previewUsers[0].name,
-                    userInstance = previewUsers[0].actorId,
+                    username = previewCommentViews[0].creator.displayName ?: previewUsers[0].name,
+                    userInstance = previewCommentViews[0].creator.actorId,
                     modifier = modifier.background(MaterialTheme.colorScheme.primaryContainer)
                 )
             }
@@ -163,8 +163,8 @@ fun PostScreenPreviewDarkGen(
             ) { index ->
                 CommentRow(
                     comment = previewCommentViews[index],
-                    username = previewUsers[0].displayName ?: previewUsers[0].name,
-                    userInstance = previewUsers[0].actorId,
+                    username = previewCommentViews[0].creator.displayName ?: previewUsers[0].name,
+                    userInstance = previewCommentViews[0].creator.actorId,
                     modifier = modifier.background(MaterialTheme.colorScheme.primaryContainer)
                 )
             }

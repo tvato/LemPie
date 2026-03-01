@@ -14,7 +14,7 @@ val previewCommunities = listOf(
     Community(
         id = 2, name = "Test Community 2", title = "Test community 2", description = null,
         isRemoved = false, published = "2022-07-09T17:56:21.988295Z", updated = null, isDeleted = false,
-        isNsfw = false, actorId = "", isLocal = false, iconUrl = null, bannerUrl = null,
+        isNsfw = false, actorId = "https://voyager.lemmy.ml/c/test_comm_2", isLocal = false, iconUrl = null, bannerUrl = null,
         postingRestrictedToMods = false, instanceId = 1, visibility = "", isHidden = false,
     )
 )

@@ -240,15 +240,16 @@ fun CardListPreviewDark(){
                 .background(MaterialTheme.colorScheme.primaryContainer)
         ) {
             items(
-                count = previewPosts.size,
-                key = { index -> previewPosts[index].id }
+                count = previewPostViews.size,
+                key = { index -> previewPostViews[index].post.id }
             ) { index ->
                 PostCard(
                     post = previewPostViews[index],
-                    user = previewUsers[0],
-                    community = null,
+                    user = previewPostViews[index].creator,
+                    community = previewPostViews[index].community,
                     navController = rememberNavController(),
-                    limitTextRows = true
+                    limitTextRows = true,
+                    noText = true
                 )
             }
         }
@@ -264,13 +265,13 @@ fun CardListPreviewLight(){
                 .background(MaterialTheme.colorScheme.primaryContainer)
         ) {
             items(
-                count = previewPosts.size,
-                key = { index -> previewPosts[index].id }
+                count = previewPostViews.size,
+                key = { index -> previewPostViews[index].post.id }
             ) { index ->
                 PostCard(
                     post = previewPostViews[index],
-                    user = previewUsers[0],
-                    community = null,
+                    user = previewPostViews[index].creator,
+                    community = previewPostViews[index].community,
                     navController = rememberNavController(),
                     limitTextRows = true
                 )
@@ -288,13 +289,13 @@ fun CardListPreviewDarkGen(){
                 .background(MaterialTheme.colorScheme.primaryContainer)
         ) {
             items(
-                count = previewPosts.size,
-                key = { index -> previewPosts[index].id }
+                count = previewPostViews.size,
+                key = { index -> previewPostViews[index].post.id }
             ) { index ->
                 PostCard(
                     post = previewPostViews[index],
-                    user = previewUsers[0],
-                    community = null,
+                    user = previewPostViews[index].creator,
+                    community = previewPostViews[index].community,
                     navController = rememberNavController(),
                     limitTextRows = true
                 )
