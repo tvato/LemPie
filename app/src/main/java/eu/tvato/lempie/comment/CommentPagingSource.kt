@@ -1,6 +1,5 @@
 package eu.tvato.lempie.comment
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import eu.tvato.lempie.api.API

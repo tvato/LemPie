@@ -19,7 +19,6 @@ import eu.tvato.lempie.post.PostViewModel
 import eu.tvato.lempie.ui.components.CommentRow
 import eu.tvato.lempie.ui.components.PostCard
 import eu.tvato.lempie.ui.previewdata.previewCommentViews
-import eu.tvato.lempie.ui.previewdata.previewComments
 import eu.tvato.lempie.ui.previewdata.previewPostViews
 import eu.tvato.lempie.ui.previewdata.previewUsers
 import eu.tvato.lempie.ui.theme.LemPieTheme

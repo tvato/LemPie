@@ -27,10 +27,7 @@ import eu.tvato.lempie.R
 import eu.tvato.lempie.community.Community
 import eu.tvato.lempie.post.Post
 import eu.tvato.lempie.post.PostView
-import eu.tvato.lempie.ui.previewdata.previewCommunities
 import eu.tvato.lempie.ui.previewdata.previewPostViews
-import eu.tvato.lempie.ui.previewdata.previewPosts
-import eu.tvato.lempie.ui.previewdata.previewUsers
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.user.User
 import eu.tvato.lempie.utils.parseIsoDate

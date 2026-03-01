@@ -22,8 +22,6 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import eu.tvato.lempie.R
 import eu.tvato.lempie.community.Community
-import eu.tvato.lempie.ui.previewdata.previewCommunities
-import eu.tvato.lempie.ui.previewdata.previewUsers
 import eu.tvato.lempie.ui.previewdata.previewCommunityViews
 import eu.tvato.lempie.ui.previewdata.previewUserViews
 import eu.tvato.lempie.ui.theme.LemPieTheme

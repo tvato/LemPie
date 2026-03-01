@@ -32,8 +32,6 @@ import eu.tvato.lempie.ui.components.HomeTopBar
 import eu.tvato.lempie.ui.components.PostCard
 import eu.tvato.lempie.ui.components.PostTopBar
 import eu.tvato.lempie.ui.previewdata.previewPostViews
-import eu.tvato.lempie.ui.previewdata.previewPosts
-import eu.tvato.lempie.ui.previewdata.previewUsers
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.ui.theme.Theme
 import kotlinx.coroutines.launch
