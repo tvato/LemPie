@@ -37,7 +37,7 @@ fun CommentRow(
     val paddingValue = if(noPadding) 0 else comment?.comment?.path?.split(".")?.size?.minus(2) ?: 0
     val startPadding = paddingValue.plus(8).times(paddingValue.plus(2).div(2)).dp
     val colors = listOf(
-        // Change these colors, maybe use theme for this
+        // TODO() Change these colors, maybe use theme for this
         Color.Red, Color.Green, Color.Blue, Color.Yellow
     )
     val lines = modifier

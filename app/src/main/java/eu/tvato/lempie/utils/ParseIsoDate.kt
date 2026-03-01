@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter
 fun parseIsoDate(
     isoString: String?,
 ): String {
-    val format = CurrentSettings.getFormat()
+    val format = CurrentSettings.getFormat()?: "MMM d, yy, HH:mm"
     if(isoString == null) return ""
     return Instant.parse(isoString)
         .atZone(ZoneId.systemDefault())

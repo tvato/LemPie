@@ -24,6 +24,8 @@ import eu.tvato.lempie.R
 import eu.tvato.lempie.community.Community
 import eu.tvato.lempie.ui.previewdata.previewCommunities
 import eu.tvato.lempie.ui.previewdata.previewUsers
+import eu.tvato.lempie.ui.previewdata.previewCommunityViews
+import eu.tvato.lempie.ui.previewdata.previewUserViews
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.user.User
 
@@ -87,8 +89,8 @@ fun BasicPostInfo(
 fun  BasicPostInfoPreview(){
     LemPieTheme {
         BasicPostInfo(
-            community = previewCommunities[0],
-            user = previewUsers[0],
+            community = previewCommunityViews[1].community,
+            user = previewUserViews[0].user,
             navController = rememberNavController()
         )
     }
