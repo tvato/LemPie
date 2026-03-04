@@ -18,28 +18,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.lifecycleScope
 import eu.tvato.lempie.ui.screens.HomeScreen
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.ui.theme.Theme
-import eu.tvato.lempie.utils.CurrentSettings
-import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        lifecycleScope.launch { CurrentSettings.initialize(1, LempieApplication.appContext) }
         setContent {
             LemPieTheme(theme = Theme.Dark){
                 HomeScreen(
                     modifier = Modifier
                 )
-                /*UserScreen(
-                    innerPadding = PaddingValues(0.dp),
-                    navController = rememberNavController(),
-                    userId = 9166
-                )*/
             }
         }
     }
