@@ -29,6 +29,7 @@ import eu.tvato.lempie.database.theme.Theme
 )
 data class Selected(
     @PrimaryKey(true) val userId: Int = 0,
-    @ColumnInfo("theme_id") val themeId: Int,
-    @ColumnInfo("datetime_format_id") val datetimeFormatId: Int,
+    @ColumnInfo("theme_id") var themeId: Int,
+    @ColumnInfo("datetime_format_id") var datetimeFormatId: Int,
+    @ColumnInfo("instance") var instanceUrl: String
 )

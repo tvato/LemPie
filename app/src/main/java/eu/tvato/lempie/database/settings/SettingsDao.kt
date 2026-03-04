@@ -3,6 +3,7 @@ package eu.tvato.lempie.database.settings
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao

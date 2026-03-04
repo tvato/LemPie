@@ -77,7 +77,7 @@ class DatabaseViewModel(
 
     fun addSettings(){
         viewModelScope.launch {
-            selectedDao.insertSelected(Selected(1,1,1))
+            selectedDao.insertSelected(Selected(1,1,1, ""))
         }
     }
 

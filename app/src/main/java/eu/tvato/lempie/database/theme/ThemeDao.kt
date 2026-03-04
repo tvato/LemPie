@@ -15,7 +15,7 @@ interface ThemeDao {
     fun getCurrentTheme(id: Int): Flow<Theme>
 
     @Update
-    suspend fun updateCurrentTheme(theme: Theme)
+    suspend fun updateTheme(theme: Theme)
 
     @Insert
     suspend fun insertTheme(theme: Theme)

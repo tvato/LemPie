@@ -15,7 +15,7 @@ interface DateTimeFormatDao {
     fun getCurrentDateTimeFormat(id: Int): Flow<DateTimeFormat>
 
     @Update
-    suspend fun updateCurrentDateTimeFormat(dateTimeFormat: DateTimeFormat)
+    suspend fun updateDateTimeFormat(dateTimeFormat: DateTimeFormat)
 
     @Insert
     suspend fun insertDateTimeFormat(dateTimeFormat: DateTimeFormat)
