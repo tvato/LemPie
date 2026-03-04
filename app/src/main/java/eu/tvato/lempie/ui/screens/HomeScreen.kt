@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,11 +14,14 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -26,12 +30,12 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.paging.compose.collectAsLazyPagingItems
 import eu.tvato.lempie.utils.CommentUtils
-import eu.tvato.lempie.post.PostViewModel
 import eu.tvato.lempie.ui.components.DrawerMenu
 import eu.tvato.lempie.ui.components.HomeTopBar
 import eu.tvato.lempie.ui.components.PostCard
 import eu.tvato.lempie.ui.components.PostTopBar
 import eu.tvato.lempie.ui.previewdata.previewPostViews
+import eu.tvato.lempie.ui.screens.viewmodel.HomeViewModel
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.ui.theme.Theme
 import kotlinx.coroutines.launch
@@ -48,6 +52,14 @@ fun HomeScreen(
         modifier = modifier
     ){
         composable(route = "Home"){
+            val owner = LocalViewModelStoreOwner.current ?: error("No ViewModelStoreOwner found")
+            val viewModel: HomeViewModel = ViewModelProvider(
+                owner = owner,
+                factory = HomeViewModel.HomeViewModelFactory(
+                    context = LocalContext.current
+                )
+            )[HomeViewModel::class.java]
+
             val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
             val drawerState = rememberDrawerState(DrawerValue.Closed)
             val scope = rememberCoroutineScope()
@@ -59,7 +71,8 @@ fun HomeScreen(
             }
             DrawerMenu(
                 drawerState = drawerState,
-                navController = navController
+                navController = navController,
+                dataStore = viewModel
             ){
                 Scaffold(
                     modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -120,7 +133,7 @@ fun HomeScreen(
             }
         }
         composable(
-            route = "Selected/{userId}",
+            route = "User/{userId}",
             arguments = listOf(navArgument("userId") { type = NavType.IntType })
         ){ backStack ->
             val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
@@ -173,24 +186,32 @@ fun CardList(
     innerPadding: PaddingValues,
     navController: NavHostController,
 ){
-    val viewModel: PostViewModel = viewModel()
-    val items = viewModel.posts.collectAsLazyPagingItems()
+    val owner = LocalViewModelStoreOwner.current ?: error("No ViewModelStoreOwner found")
+    val viewModel: HomeViewModel = ViewModelProvider(
+        owner = owner,
+        factory = HomeViewModel.HomeViewModelFactory(
+            context = LocalContext.current
+        )
+    )[HomeViewModel::class.java]
+    val posts = viewModel.posts.collectAsLazyPagingItems()
+    val format = viewModel.datetimeFormat.collectAsState()
     LazyColumn(
         modifier = modifier.fillMaxSize()
             .background(MaterialTheme.colorScheme.primaryContainer),
         contentPadding = innerPadding
     ) {
         items(
-            count = items.itemCount,
-            key = { index -> items[index]?.post?.id ?: index }
+            count = posts.itemCount,
+            key = { index -> posts[index]?.post?.id ?: index }
         ){ index ->
             PostCard(
-                post = items[index],
-                user = items[index]?.creator,
-                community = items[index]?.community,
+                post = posts[index],
+                user = posts[index]?.creator,
+                community = posts[index]?.community,
                 navController = navController,
                 limitTextRows = true,
                 noText = true,
+                format = format.value,
                 modifier = modifier
             )
         }
@@ -247,7 +268,8 @@ fun CardListPreviewDark(){
                     community = previewPostViews[index].community,
                     navController = rememberNavController(),
                     limitTextRows = true,
-                    noText = true
+                    noText = true,
+                    format = "MMM d, yy, HH:mm"
                 )
             }
         }
@@ -271,7 +293,8 @@ fun CardListPreviewLight(){
                     user = previewPostViews[index].creator,
                     community = previewPostViews[index].community,
                     navController = rememberNavController(),
-                    limitTextRows = true
+                    limitTextRows = true,
+                    format = "MMM d, yy, HH:mm"
                 )
             }
         }
@@ -295,7 +318,8 @@ fun CardListPreviewDarkGen(){
                     user = previewPostViews[index].creator,
                     community = previewPostViews[index].community,
                     navController = rememberNavController(),
-                    limitTextRows = true
+                    limitTextRows = true,
+                    format = "MMM d, yy, HH:mm"
                 )
             }
         }

@@ -18,8 +18,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import eu.tvato.lempie.LempieApplication
+import eu.tvato.lempie.datastore.DataStoreRepository
+import eu.tvato.lempie.ui.screens.viewmodel.HomeViewModel
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.ui.theme.Theme
 
@@ -27,13 +31,17 @@ import eu.tvato.lempie.ui.theme.Theme
 fun DrawerMenu(
     drawerState: DrawerState,
     navController: NavHostController,
+    dataStore: HomeViewModel,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ){
     val setInstanceDialog = remember { mutableStateOf(false) }
     when{
         setInstanceDialog.value -> {
-            SetInstanceDialog({setInstanceDialog.value = false})
+            SetInstanceDialog(
+                dismissRequest = { setInstanceDialog.value = false },
+                dataStore = dataStore
+            )
         }
     }
     ModalNavigationDrawer(
@@ -112,7 +120,8 @@ fun DrawerMenuPreview(
     LemPieTheme(theme = theme) {
         DrawerMenu(
             drawerState = rememberDrawerState(DrawerValue.Open),
-            navController = rememberNavController()
+            navController = rememberNavController(),
+            dataStore = viewModel()
         ){}
     }
 }

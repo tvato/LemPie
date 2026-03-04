@@ -8,19 +8,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
-import eu.tvato.lempie.comment.CommentViewModel
 import eu.tvato.lempie.utils.CommentUtils
-import eu.tvato.lempie.post.PostViewModel
 import eu.tvato.lempie.ui.components.CommentRow
 import eu.tvato.lempie.ui.components.PostCard
 import eu.tvato.lempie.ui.previewdata.previewCommentViews
 import eu.tvato.lempie.ui.previewdata.previewPostViews
 import eu.tvato.lempie.ui.previewdata.previewUsers
+import eu.tvato.lempie.ui.screens.viewmodel.PostViewModel
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.ui.theme.Theme
 
@@ -31,16 +32,18 @@ fun PostScreen(
     innerPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ){
-    // TODO() There might be a better way to do all this:
-    val commentViewModel: CommentViewModel = viewModel()
-    val postViewModel: PostViewModel = viewModel()
-    postViewModel.setPostId(postId)
-    postViewModel.loadPostDetails()
-    commentViewModel.setPostId(postId)
+    val owner = LocalViewModelStoreOwner.current ?: error("No ViewModelStoreOwner found")
+    val viewModel: PostViewModel = ViewModelProvider(
+        owner = owner,
+        factory = PostViewModel.PostViewModelFactory(
+            context = LocalContext.current,
+            postId = postId
+        )
+    )[PostViewModel::class.java]
 
-    // This needs to be called to get the comments
-    commentViewModel.comments.collectAsLazyPagingItems()
-    val postView = postViewModel.postDetail.collectAsState()
+    val comments = viewModel.comments.collectAsLazyPagingItems()
+    val postView = viewModel.postDetail.collectAsState()
+    val format = viewModel.datetimeFormat.collectAsState()
 
     // CommentUtils is just a workaround to get comments in a sorted manner. Possible TODO()
     val commentList = CommentUtils.getComments()
@@ -54,17 +57,20 @@ fun PostScreen(
                 post = postView.value,
                 user = postView.value?.creator,
                 community = postView.value?.community,
-                navController = navController
+                navController = navController,
+                format = format.value
             )
         }
+
         if(commentList.isNotEmpty()) items(
-            count = commentList.size,
-            key = { index -> commentList[index].comment.id }
+            count = comments.itemCount,
+            key = { index -> comments[index]?.comment?.id ?: index }
         ){ index ->
             CommentRow(
-                comment = commentList[index],
-                username = commentList[index].creator.displayName ?: commentList[index].creator.name,
-                userInstance = commentList[index].creator.actorId
+                comment = comments[index],
+                username = comments[index]?.creator?.displayName ?: comments[index]?.creator?.name.toString(),
+                userInstance = comments[index]?.creator?.actorId.toString(),
+                format = format.value
             )
         }
     }
@@ -86,7 +92,8 @@ fun PostScreenPreviewDark(
                     post = previewPostViews[1],
                     user = previewPostViews[1].creator,
                     community = previewPostViews[1].community,
-                    navController = navController
+                    navController = navController,
+                    format = "MMM d, yy, HH:mm"
                 )
             }
             items(
@@ -96,7 +103,8 @@ fun PostScreenPreviewDark(
                 CommentRow(
                     comment = previewCommentViews[index],
                     username = previewCommentViews[index].creator.displayName ?: previewCommentViews[index].creator.name,
-                    userInstance = previewCommentViews[index].creator.actorId
+                    userInstance = previewCommentViews[index].creator.actorId,
+                    format = "MMM d, yy, HH:mm"
                 )
             }
         }
@@ -119,7 +127,8 @@ fun PostScreenPreviewLight(
                     post = previewPostViews[0],
                     user = previewPostViews[0].creator,
                     community = previewPostViews[0].community,
-                    navController = navController
+                    navController = navController,
+                    format = "MMM d, yy, HH:mm"
                 )
             }
             items(
@@ -130,7 +139,8 @@ fun PostScreenPreviewLight(
                     comment = previewCommentViews[index],
                     username = previewCommentViews[0].creator.displayName ?: previewUsers[0].name,
                     userInstance = previewCommentViews[0].creator.actorId,
-                    modifier = modifier.background(MaterialTheme.colorScheme.primaryContainer)
+                    modifier = modifier.background(MaterialTheme.colorScheme.primaryContainer),
+                    format = "MMM d, yy, HH:mm"
                 )
             }
         }
@@ -153,7 +163,8 @@ fun PostScreenPreviewDarkGen(
                     post = previewPostViews[0],
                     user = previewPostViews[0].creator,
                     community = previewPostViews[0].community,
-                    navController = navController
+                    navController = navController,
+                    format = "MMM d, yy, HH:mm"
                 )
             }
             items(
@@ -164,7 +175,8 @@ fun PostScreenPreviewDarkGen(
                     comment = previewCommentViews[index],
                     username = previewCommentViews[0].creator.displayName ?: previewUsers[0].name,
                     userInstance = previewCommentViews[0].creator.actorId,
-                    modifier = modifier.background(MaterialTheme.colorScheme.primaryContainer)
+                    modifier = modifier.background(MaterialTheme.colorScheme.primaryContainer),
+                    format = "MMM d, yy, HH:mm"
                 )
             }
         }

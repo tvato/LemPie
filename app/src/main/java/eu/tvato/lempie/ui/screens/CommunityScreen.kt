@@ -1,5 +1,6 @@
 package eu.tvato.lempie.ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
@@ -20,22 +22,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import eu.tvato.lempie.R
 import eu.tvato.lempie.community.CommunityView
-import eu.tvato.lempie.community.CommunityViewModel
 import eu.tvato.lempie.ui.components.PostCard
 import eu.tvato.lempie.ui.previewdata.previewCommunityViews
 import eu.tvato.lempie.ui.previewdata.previewPostViews
 import eu.tvato.lempie.ui.previewdata.previewUsers
+import eu.tvato.lempie.ui.screens.viewmodel.CommunityViewModel
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.ui.theme.Theme
 import eu.tvato.lempie.utils.parseIsoDate
@@ -47,11 +52,19 @@ fun CommunityScreen(
     innerPadding: PaddingValues,
     modifier: Modifier = Modifier
 ){
-    val communityViewModel: CommunityViewModel = viewModel()
-    communityViewModel.setCommunityId(communityId)
-    communityViewModel.loadCommunity()
-    val community = communityViewModel.community.collectAsState()
-    val posts = communityViewModel.posts.collectAsLazyPagingItems()
+    val owner = LocalViewModelStoreOwner.current ?: error("No ViewModelStoreOwner found")
+    val viewModel: CommunityViewModel = ViewModelProvider(
+        owner = owner,
+        factory = CommunityViewModel.CommunityViewModelFactory(
+            context = LocalContext.current,
+            communityId = communityId
+        )
+    )[CommunityViewModel::class.java]
+
+    val community = viewModel.community.collectAsState()
+    val posts = viewModel.posts.collectAsLazyPagingItems()
+    val format = viewModel.datetimeFormat.collectAsState()
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -60,7 +73,8 @@ fun CommunityScreen(
     ) {
         item {
             CommunityDetailsCard(
-                community = community.value?.communityView
+                community = community.value?.communityView,
+                format = format.value
             )
         }
 
@@ -73,7 +87,8 @@ fun CommunityScreen(
                 user = posts[index]?.creator,
                 community = community.value?.communityView?.community,
                 navController = navController,
-                limitTextRows = true
+                limitTextRows = true,
+                format = format.value
             )
         }
     }
@@ -82,6 +97,7 @@ fun CommunityScreen(
 @Composable
 fun CommunityDetailsCard(
     community: CommunityView?,
+    format: String,
     modifier: Modifier = Modifier,
 ){
     ConstraintLayout(
@@ -89,7 +105,7 @@ fun CommunityDetailsCard(
             .background(MaterialTheme.colorScheme.primaryContainer)
             .padding(bottom = 50.dp)
     ){
-        val (banner, userIcon, card) = createRefs()
+        val (banner, icon, card) = createRefs()
         if(community?.community?.bannerUrl != null) AsyncImage(
             model = community.community.bannerUrl,
             contentDescription = null,
@@ -145,7 +161,7 @@ fun CommunityDetailsCard(
                 )
             }
             Text(
-                text = "Created: ${parseIsoDate(community?.community?.published)}",
+                text = "Created: ${parseIsoDate(community?.community?.published, format)}",
                 modifier = modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(bottom = 20.dp)
@@ -157,11 +173,12 @@ fun CommunityDetailsCard(
             fallback = painterResource(R.drawable.lempie_001), // TODO() change drawable, make better one...
             modifier = modifier
                 .clip(CircleShape)
-                .constrainAs(userIcon) {
+                .constrainAs(icon) {
                     top.linkTo(parent.top, margin = 155.dp)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
+                .sizeIn(maxHeight = 90.dp, maxWidth = 90.dp)
         )
     }
 }
@@ -184,7 +201,8 @@ fun CommunityScreenPreview(
         ) {
             item {
                 CommunityDetailsCard(
-                    community = community
+                    community = community,
+                    format = "MMM d, yy, HH:mm"
                 )
             }
 
@@ -197,7 +215,8 @@ fun CommunityScreenPreview(
                     user = users[index],
                     community = community.community,
                     navController = rememberNavController(),
-                    limitTextRows = true
+                    limitTextRows = true,
+                    format = "MMM d, yy, HH:mm"
                 )
             }
         }

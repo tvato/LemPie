@@ -31,6 +31,7 @@ fun CommentRow(
     comment: CommentView?,
     username: String,
     userInstance: String,
+    format: String,
     modifier: Modifier = Modifier,
     noPadding: Boolean = false
 ) {
@@ -75,7 +76,7 @@ fun CommentRow(
                 color = MaterialTheme.colorScheme.secondary
             )
             Text(
-                text = parseIsoDate(comment?.comment?.published),
+                text = parseIsoDate(comment?.comment?.published, format),
                 color = MaterialTheme.colorScheme.tertiary
             )
         }
@@ -134,6 +135,7 @@ fun UserComment(
     username: String,
     communityInstance: String,
     navController: NavHostController,
+    format: String,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -158,7 +160,7 @@ fun UserComment(
                 color = MaterialTheme.colorScheme.secondary
             )
             Text(
-                text = parseIsoDate(comment?.comment?.published),
+                text = parseIsoDate(comment?.comment?.published, format),
                 color = MaterialTheme.colorScheme.tertiary
             )
         }
@@ -215,7 +217,8 @@ fun CommentRowPreview(){
             comment = comment,
             username = comment.creator.name,
             userInstance = comment.creator.actorId,
-            noPadding = false
+            noPadding = false,
+            format = "MMM d, yy, HH:mm"
         )
     }
 }
@@ -229,7 +232,8 @@ fun CommentRowPreview2(){
             comment = comment,
             username = comment.creator.name,
             userInstance = comment.creator.actorId,
-            noPadding = false
+            noPadding = false,
+            format = "MMM d, yy, HH:mm"
         )
     }
 }
@@ -243,7 +247,8 @@ fun CommentRowPreview3(){
             comment = comment,
             username = comment.creator.name,
             userInstance = comment.creator.actorId,
-            noPadding = false
+            noPadding = false,
+            format = "MMM d, yy, HH:mm"
         )
     }
 }
@@ -257,7 +262,8 @@ fun CommentRowPreview4(){
             comment = comment,
             username = comment.creator.name,
             userInstance = comment.creator.actorId,
-            noPadding = false
+            noPadding = false,
+            format = "MMM d, yy, HH:mm"
         )
     }
 }

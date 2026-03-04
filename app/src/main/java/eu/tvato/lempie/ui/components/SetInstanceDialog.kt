@@ -15,6 +15,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,14 +26,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.viewmodel.compose.viewModel
+import eu.tvato.lempie.ui.screens.viewmodel.HomeViewModel
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.ui.theme.Theme
 
 @Composable
 fun SetInstanceDialog(
     dismissRequest: () -> Unit,
+    dataStore: HomeViewModel,
     modifier: Modifier = Modifier
 ){
+    // TODO() Something better here,
+    //      so HomeViewModel doesn't need to be passed around like a cheap whore
+    val instanceState = dataStore.instance.collectAsState()
+    val instance = remember { mutableStateOf(instanceState.value) }
     Dialog(
         onDismissRequest = { dismissRequest() },
         properties = DialogProperties(
@@ -51,8 +61,8 @@ fun SetInstanceDialog(
                 modifier = modifier.padding(10.dp).align(Alignment.CenterHorizontally)
             )
             TextField(
-                value = "https://example.com",
-                onValueChange = {},
+                value = instance.value.ifEmpty { instanceState.value },
+                onValueChange = { instance.value = it },
                 singleLine = true,
                 colors = TextFieldDefaults.colors().copy(
                     focusedTextColor = MaterialTheme.colorScheme.onSurface,
@@ -64,17 +74,26 @@ fun SetInstanceDialog(
             )
             Row{
                 TextButton(
-                    onClick = {},
+                    onClick = { dismissRequest() },
                     modifier = modifier.padding(10.dp)
                 ) {
-                    Text("Cancel")
+                    Text(
+                        text = "Cancel",
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
                 }
                 Spacer(modifier = modifier.weight(1f))
                 TextButton(
-                    onClick = {},
+                    onClick = {
+                        dataStore.setInstance(instance.value)
+                        dismissRequest()
+                    },
                     modifier = modifier.padding(10.dp)
                 ) {
-                    Text("Confirm")
+                    Text(
+                        text = "Confirm",
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
                 }
             }
         }
@@ -88,7 +107,7 @@ fun SetInstanceDialogPreview(){
         Column(
             modifier = Modifier.fillMaxSize().background(Color.Black)
         ) {
-            SetInstanceDialog({})
+            SetInstanceDialog({}, viewModel())
         }
     }
 }

@@ -1,18 +1,28 @@
-package eu.tvato.lempie.post
+package eu.tvato.lempie.ui.screens.viewmodel
 
+import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import eu.tvato.lempie.datastore.DataStoreRepository
+import eu.tvato.lempie.post.PostRepository
+import eu.tvato.lempie.post.PostView
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class PostViewModel(
-    private val repository: PostRepository = PostRepository()
+class HomeViewModel(
+    private val repository: PostRepository = PostRepository(),
+    context: Context
 ): ViewModel() {
+    val dataStore = DataStoreRepository(context)
     private val _type = MutableStateFlow("All")
     val type: StateFlow<String> = _type.asStateFlow()
 
@@ -49,11 +59,6 @@ class PostViewModel(
     private val _pageCursor = MutableStateFlow<String?>(null)
     val pageCursor: StateFlow<String?> = _pageCursor.asStateFlow()
 
-    private val _postDetails = MutableStateFlow<PostView?>(null)
-    val postDetail: StateFlow<PostView?> = _postDetails.asStateFlow()
-
-    private val _postId = MutableStateFlow<Int?>(null)
-    val postId: StateFlow<Int?> = _postId.asStateFlow()
     val posts: Flow<PagingData<PostView>> = repository.getPosts(
         type = type.value,
         sort = sort.value,
@@ -68,9 +73,23 @@ class PostViewModel(
         dislikedOnly = dislikedOnly.value,
         pageCursor = pageCursor.value
     ).cachedIn(viewModelScope)
-    fun loadPostDetails(){
+
+    val datetimeFormat = dataStore.getDatetimeFormat().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = ""
+    )
+
+    val instance = dataStore.getInstance().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = ""
+    )
+
+    fun setInstance(newInstance: String){
+        Log.d("dd", "Setting Instance to: $newInstance")
         viewModelScope.launch {
-            _postDetails.value = repository.getPost(postId = postId.value, commentId = null)
+            dataStore.setInstance(newInstance)
         }
     }
 
@@ -86,5 +105,12 @@ class PostViewModel(
     fun changeLikedOnly(newValue: Boolean?){ _likedOnly.value = newValue }
     fun changeDislikedOnly(newValue: Boolean?){ _dislikedOnly.value = newValue }
     fun changePageCursor(newCursor: String?){ _pageCursor.value = newCursor }
-    fun setPostId(newPostId: Int){ _postId.value = newPostId }
+
+    class HomeViewModelFactory(
+        private val context: Context
+    ): ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return HomeViewModel(context = context) as T
+        }
+    }
 }

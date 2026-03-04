@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
@@ -20,6 +21,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -30,11 +32,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -49,7 +53,7 @@ import eu.tvato.lempie.ui.previewdata.previewUserViews
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.ui.theme.Theme
 import eu.tvato.lempie.user.UserView
-import eu.tvato.lempie.user.UserViewModel
+import eu.tvato.lempie.ui.screens.viewmodel.UserViewModel
 import eu.tvato.lempie.utils.parseIsoDate
 
 @Composable
@@ -57,19 +61,22 @@ fun UserScreen(
     innerPadding: PaddingValues,
     navController: NavHostController,
     userId: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ){
-    val viewModel: UserViewModel = viewModel()
-    viewModel.setUserId(userId)
+    val owner = LocalViewModelStoreOwner.current ?: error("No ViewModelStoreOwner found")
+    val viewModel: UserViewModel = ViewModelProvider(
+        owner = owner,
+        factory = UserViewModel.UserViewModelFactory(
+            context = LocalContext.current,
+            userId = userId
+        )
+    )[UserViewModel::class.java]
+
     val userContents = viewModel.contents.collectAsLazyPagingItems()
+    val userDetails = if(userContents.itemCount > 0) userContents[0]?.user else null
+    val format = viewModel.datetimeFormat.collectAsState()
 
-    val userDetails = userContents[0]?.user
-    val posts = viewModel.posts.collectAsLazyPagingItems()
-    val comments = viewModel.comments.collectAsLazyPagingItems()
-    val moderates = viewModel.moderates.collectAsLazyPagingItems()
-
-    var contentType by remember { mutableStateOf("All") }
-
+    var contentType by remember { mutableStateOf("posts") }
     var tabIndex by remember { mutableIntStateOf(0) }
 
     LazyColumn(
@@ -94,30 +101,33 @@ fun UserScreen(
             count = userContents.itemCount,
             key = { index -> index }
         ){ index ->
-            val pagePosts = posts[index]
-            val pageComments = comments[index]
-            val all = pagePosts?.plus(pageComments)
-            Card(       // TODO() Remove this? Is this necessary?
-                modifier = modifier.padding(bottom = 5.dp)
-            ) {
-                when(val item = all?.get(index)){
-                    is PostView ->
+            when(contentType){
+                "posts" -> {
+                    userContents[index]?.posts?.forEach {
                         PostCard(
-                            post = item,
-                            user = item.creator,
-                            community = item.community,
+                            post = it,
+                            user = it.creator,
+                            community = it.community,
                             navController = navController,
-                            limitTextRows = true
+                            limitTextRows = true,
+                            format = format.value
                         )
-
-                    is CommentView ->
-                        UserComment(
-                            comment = item,
-                            username = item.creator.displayName ?: item.creator.name,
-                            communityInstance = item.creator.actorId,
-                            navController = navController
-                        )
+                    }
                 }
+
+                "comments" -> {
+                    userContents[index]?.comments?.forEach {
+                        UserComment(
+                            comment = it,
+                            username = it.creator.displayName ?: it.creator.name,
+                            communityInstance = it.creator.actorId,
+                            navController = navController,
+                            format = format.value
+                        )
+                    }
+                }
+
+                else -> {}
             }
         }
     }
@@ -195,6 +205,7 @@ fun UserDetailsCard(
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
+                .sizeIn(maxHeight = 90.dp, maxWidth = 90.dp)
         )
     }
 }
@@ -205,7 +216,7 @@ fun ContentTab(
     tabIndex: Int,
     modifier: Modifier = Modifier
 ){
-    val tabs = listOf("All", "Posts", "Comments")
+    val tabs = listOf(/*"All",*/ "Posts", "Comments")
     Column(
         modifier = modifier.background(MaterialTheme.colorScheme.primaryContainer)
     ) {
@@ -279,7 +290,8 @@ fun UserScreenPreview(
                                 user = item.creator,
                                 community = item.community,
                                 navController = navController,
-                                limitTextRows = true
+                                limitTextRows = true,
+                                format = "MMM d, yy, HH:mm"
                             )
 
                         is CommentView ->
@@ -287,7 +299,8 @@ fun UserScreenPreview(
                                 comment = item,
                                 username = item.creator.displayName ?: item.creator.name,
                                 communityInstance = item.creator.actorId,
-                                navController = navController
+                                navController = navController,
+                                format = "MMM d, yy, HH:mm"
                             )
                     }
                 }

@@ -37,6 +37,7 @@ fun PostCard(
     post: PostView?,
     user: User?,
     community: Community?,
+    format: String,
     navController: NavHostController,
     modifier: Modifier = Modifier,
     limitTextRows: Boolean = false,
@@ -73,7 +74,7 @@ fun PostCard(
             color = MaterialTheme.colorScheme.onBackground
         )
 
-        TagAndDateRow(post?.post)
+        TagAndDateRow(post?.post, format)
 
         if(post?.post?.imageOrLink != null && post.post.urlContentType?.contains("image") != true) Text(
             text = post.post.imageOrLink.split("/")[2],
@@ -115,7 +116,10 @@ fun PostCard(
 }
 
 @Composable
-fun TagAndDateRow(post: Post?, modifier: Modifier = Modifier){
+fun TagAndDateRow(
+    post: Post?,
+    format: String,
+    modifier: Modifier = Modifier){
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
@@ -134,7 +138,7 @@ fun TagAndDateRow(post: Post?, modifier: Modifier = Modifier){
             }
         )
         Text(
-            text = parseIsoDate(post?.published),
+            text = parseIsoDate(post?.published, format),
             color = MaterialTheme.colorScheme.tertiary
         )
     }
@@ -187,7 +191,8 @@ fun PostCardPreview() {
             post = previewPostViews[2],
             community = previewPostViews[2].community,
             user = previewPostViews[2].creator,
-            navController = rememberNavController()
+            navController = rememberNavController(),
+            format = "MMM d, yy, HH:mm"
         )
     }
 }
