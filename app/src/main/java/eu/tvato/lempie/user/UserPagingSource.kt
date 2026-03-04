@@ -12,11 +12,12 @@ class UserPagingSource(
 ): PagingSource<Int, UserResponse>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UserResponse> {
         return try {
-            val response = api.getUserDetail(userId = userId, page = params.key)
+            val page = params.key ?: 1
+            val response = api.getUserDetail(userId = userId, page = page)
             LoadResult.Page(
                 data = listOf(response),
-                prevKey = params.key?.minus(1),
-                nextKey = params.key?.plus(1)
+                prevKey = null,
+                nextKey = if(response.comments.isNotEmpty() && response.posts.isNotEmpty()) page.plus(1) else null
             )
         }catch(e: IOException){
             LoadResult.Error(e)
