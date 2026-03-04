@@ -1,5 +1,6 @@
 package eu.tvato.lempie.comment
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import eu.tvato.lempie.api.API
@@ -15,7 +16,6 @@ class CommentPagingSource(
         return try{
             val page = params.key ?: 1
             val response = api.getCommentsByPostId(postId = postId, page = page, sort = "New", maxDepth = 8)
-
             CommentUtils.addAndSort(response.comments)
             LoadResult.Page(
                 data = response.comments,
