@@ -41,7 +41,8 @@ fun PostScreen(
         )
     )[PostViewModel::class.java]
 
-    val comments = viewModel.comments.collectAsLazyPagingItems()
+    // This needs to be called to start the Paging of the comments
+    viewModel.comments.collectAsLazyPagingItems()
     val postView = viewModel.postDetail.collectAsState()
     val format = viewModel.datetimeFormat.collectAsState()
 
@@ -63,13 +64,13 @@ fun PostScreen(
         }
 
         if(commentList.isNotEmpty()) items(
-            count = comments.itemCount,
-            key = { index -> comments[index]?.comment?.id ?: index }
+            count = commentList.size,
+            key = { index -> commentList[index].comment.id }
         ){ index ->
             CommentRow(
-                comment = comments[index],
-                username = comments[index]?.creator?.displayName ?: comments[index]?.creator?.name.toString(),
-                userInstance = comments[index]?.creator?.actorId.toString(),
+                comment = commentList[index],
+                username = commentList[index].creator.displayName ?: commentList[index].creator.name,
+                userInstance = commentList[index].creator.actorId,
                 format = format.value
             )
         }
