@@ -2,6 +2,7 @@ package eu.tvato.lempie.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.HorizontalDivider
@@ -16,22 +17,25 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.datastore.preferences.core.edit
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import eu.tvato.lempie.LempieApplication
-import eu.tvato.lempie.datastore.DataStoreRepository
-import eu.tvato.lempie.ui.screens.viewmodel.HomeViewModel
+import eu.tvato.lempie.datastore.DataStoreKeys
+import eu.tvato.lempie.datastore.dataStore
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.ui.theme.Theme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun DrawerMenu(
     drawerState: DrawerState,
     navController: NavHostController,
-    dataStore: HomeViewModel,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ){
@@ -40,14 +44,15 @@ fun DrawerMenu(
         setInstanceDialog.value -> {
             SetInstanceDialog(
                 dismissRequest = { setInstanceDialog.value = false },
-                dataStore = dataStore
             )
         }
     }
     ModalNavigationDrawer(
         drawerState = drawerState,
+        scrimColor = Color.Transparent,
         drawerContent = {
             ModalDrawerSheet(
+                modifier = modifier.width(250.dp),
                 drawerContainerColor = MaterialTheme.colorScheme.surface,
                 drawerTonalElevation = 10.dp
             ){
@@ -55,7 +60,8 @@ fun DrawerMenu(
                     text = "Menu",
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.titleLarge,
-                    modifier = modifier.align(Alignment.CenterHorizontally)
+                    modifier = modifier
+                        .align(Alignment.CenterHorizontally)
                         .padding(top = 10.dp)
                 )
                 HorizontalDivider(
@@ -91,12 +97,14 @@ fun DrawerMenu(
                         style = MaterialTheme.typography.titleMedium
                     )
                     NavigationDrawerItem(
-                        label = { Text(text = "Theme") },
+                        label = { Text(text = "Toggle Light/Dark") },
                         selected = false,
                         onClick = {
-                            /* TODO() Change theme (either cycle through, or open a selector dialog)
-                                     (toggle between light/dark theme here, selector in settings?)
-                            */
+                            CoroutineScope(Dispatchers.IO).launch {
+                                LempieApplication.appContext.dataStore.edit {
+                                    it[DataStoreKeys.THEME] = if(it[DataStoreKeys.THEME] == "Dark") "Light" else "Dark"
+                                }
+                            }
                         },
                         modifier = modifier.padding(start = 20.dp)
                     )
@@ -120,8 +128,7 @@ fun DrawerMenuPreview(
     LemPieTheme(theme = theme) {
         DrawerMenu(
             drawerState = rememberDrawerState(DrawerValue.Open),
-            navController = rememberNavController(),
-            dataStore = viewModel()
+            navController = rememberNavController()
         ){}
     }
 }

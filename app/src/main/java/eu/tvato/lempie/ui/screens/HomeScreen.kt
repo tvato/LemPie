@@ -52,14 +52,6 @@ fun HomeScreen(
         modifier = modifier
     ){
         composable(route = "Home"){
-            val owner = LocalViewModelStoreOwner.current ?: error("No ViewModelStoreOwner found")
-            val viewModel: HomeViewModel = ViewModelProvider(
-                owner = owner,
-                factory = HomeViewModel.HomeViewModelFactory(
-                    context = LocalContext.current
-                )
-            )[HomeViewModel::class.java]
-
             val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
             val drawerState = rememberDrawerState(DrawerValue.Closed)
             val scope = rememberCoroutineScope()
@@ -72,7 +64,6 @@ fun HomeScreen(
             DrawerMenu(
                 drawerState = drawerState,
                 navController = navController,
-                dataStore = viewModel
             ){
                 Scaffold(
                     modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
