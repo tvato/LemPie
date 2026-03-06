@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val repository: PostRepository = PostRepository(),
+    repository: PostRepository = PostRepository(),
     context: Context
 ): ViewModel() {
     val dataStore = DataStoreRepository(context)
