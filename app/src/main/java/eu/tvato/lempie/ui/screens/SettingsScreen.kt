@@ -13,12 +13,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import eu.tvato.lempie.R
+import eu.tvato.lempie.ui.screens.viewmodel.SettingsViewModel
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.ui.theme.Theme
 
@@ -28,6 +32,13 @@ fun SettingsScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ){
+    val owner = LocalViewModelStoreOwner.current ?: error("No ViewModelStoreOwner found")
+    val viewModel: SettingsViewModel = ViewModelProvider(
+        owner = owner,
+        factory = SettingsViewModel.MainViewModelFactory(
+            context = LocalContext.current
+        )
+    )[SettingsViewModel::class.java]
     LazyColumn(
         modifier = modifier.fillMaxSize().background(Color.Black),
         contentPadding = innerPadding
