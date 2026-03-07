@@ -43,7 +43,7 @@ import eu.tvato.lempie.ui.previewdata.previewUsers
 import eu.tvato.lempie.ui.screens.viewmodel.CommunityViewModel
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.ui.theme.Theme
-import eu.tvato.lempie.utils.parseIsoDate
+import eu.tvato.lempie.utils.Utils
 
 @Composable
 fun CommunityScreen(
@@ -161,7 +161,7 @@ fun CommunityDetailsCard(
                 )
             }
             Text(
-                text = "Created: ${parseIsoDate(community?.community?.published, format)}",
+                text = "Created: ${Utils.parseIsoDate(community?.community?.published, format)}",
                 modifier = modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(bottom = 20.dp)

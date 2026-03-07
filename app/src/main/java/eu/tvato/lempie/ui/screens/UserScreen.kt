@@ -54,7 +54,7 @@ import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.ui.theme.Theme
 import eu.tvato.lempie.user.UserView
 import eu.tvato.lempie.ui.screens.viewmodel.UserViewModel
-import eu.tvato.lempie.utils.parseIsoDate
+import eu.tvato.lempie.utils.Utils
 
 @Composable
 fun UserScreen(
@@ -188,7 +188,7 @@ fun UserDetailsCard(
                 )
             }
             Text(
-                text = "Created: ${parseIsoDate(user?.user?.published)}",
+                text = "Created: ${Utils.parseIsoDate(user?.user?.published)}",
                 modifier = modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(bottom = 20.dp)

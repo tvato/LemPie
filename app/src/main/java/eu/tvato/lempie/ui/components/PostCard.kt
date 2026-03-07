@@ -30,7 +30,7 @@ import eu.tvato.lempie.post.PostView
 import eu.tvato.lempie.ui.previewdata.previewPostViews
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.user.User
-import eu.tvato.lempie.utils.parseIsoDate
+import eu.tvato.lempie.utils.Utils
 
 @Composable
 fun PostCard(
@@ -138,7 +138,7 @@ fun TagAndDateRow(
             }
         )
         Text(
-            text = parseIsoDate(post?.published, format),
+            text = Utils.parseIsoDate(post?.published, format),
             color = MaterialTheme.colorScheme.tertiary
         )
     }

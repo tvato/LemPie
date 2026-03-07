@@ -24,7 +24,7 @@ import eu.tvato.lempie.comment.CommentView
 import eu.tvato.lempie.ui.previewdata.previewCommentViews
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.ui.theme.Theme
-import eu.tvato.lempie.utils.parseIsoDate
+import eu.tvato.lempie.utils.Utils
 
 @Composable
 fun CommentRow(
@@ -76,7 +76,7 @@ fun CommentRow(
                 color = MaterialTheme.colorScheme.secondary
             )
             Text(
-                text = parseIsoDate(comment?.comment?.published, format),
+                text = Utils.parseIsoDate(comment?.comment?.published, format),
                 color = MaterialTheme.colorScheme.tertiary
             )
         }
@@ -160,7 +160,7 @@ fun UserComment(
                 color = MaterialTheme.colorScheme.secondary
             )
             Text(
-                text = parseIsoDate(comment?.comment?.published, format),
+                text = Utils.parseIsoDate(comment?.comment?.published, format),
                 color = MaterialTheme.colorScheme.tertiary
             )
         }
