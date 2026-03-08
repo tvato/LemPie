@@ -180,11 +180,11 @@ fun UserDetailsCard(
                 modifier = modifier.padding(top = 10.dp, start = 50.dp, end = 50.dp, bottom = 20.dp),
             ) {
                 Text(
-                    text = "Posts: ${user?.counts?.postCount}"
+                    text = "Posts: ${Utils.addNumberDelimiter(user?.counts?.postCount)}"
                 )
                 Spacer(modifier = modifier.weight(1f))
                 Text(
-                    text = "Comments: ${user?.counts?.commentCount}"
+                    text = "Comments: ${Utils.addNumberDelimiter(user?.counts?.commentCount)}"
                 )
             }
             Text(
