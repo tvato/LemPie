@@ -11,6 +11,7 @@ Home screen
 - [ ] Better UI
 - [ ] Full API
 - [ ] Proper settings
-- [ ] Images in comments (markdown parsing)
+- [ ] Images in comments
+- [x] Basic markdown parser
 - [ ] Search
 - [ ] Buttons for sorting
