@@ -4,6 +4,7 @@ import eu.tvato.lempie.comment.CommentResponse
 import eu.tvato.lempie.community.CommunityResponse
 import eu.tvato.lempie.post.PostResponse
 import eu.tvato.lempie.post.PostsResponse
+import eu.tvato.lempie.site.SiteResponse
 import eu.tvato.lempie.user.UserResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -64,4 +65,7 @@ interface API {
         @Query("id") communityId: Int? = null,
         @Query("name") name: String? = null
     ): CommunityResponse
+
+    @GET("api/v3/site")
+    suspend fun getSite(): SiteResponse
 }

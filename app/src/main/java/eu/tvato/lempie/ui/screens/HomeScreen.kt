@@ -9,6 +9,7 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTopAppBarState
@@ -166,6 +167,23 @@ fun HomeScreen(
         }
         composable(route = "DateAndTimeSettings"){
             DateAndTimeScreen()
+        }
+        composable(route = "InstanceInfo"){
+            val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+            Scaffold(
+                modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+                topBar = {
+                    PostTopBar(
+                        scrollBehavior = scrollBehavior,
+                        navController = navController
+                    )
+                }
+            ) { innerPadding ->
+                InstanceScreen(
+                    navController = navController,
+                    innerPadding = innerPadding
+                )
+            }
         }
     }
 }

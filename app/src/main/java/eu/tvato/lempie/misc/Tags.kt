@@ -14,3 +14,11 @@ data class Tag(
     @SerializedName("deleted")      val deleted: Boolean,
     @SerializedName("color")        val color: String
 )
+
+data class TagLine(
+    @SerializedName("id")               val id: Int,
+    @SerializedName("local_site_id")    val localSiteId: Int,
+    @SerializedName("content")          val content: String,
+    @SerializedName("published")        val published: String,
+    @SerializedName("updated")          val updated: String?
+)

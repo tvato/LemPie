@@ -78,7 +78,7 @@ fun DrawerMenu(
                     NavigationDrawerItem(
                         label = { Text(text = "Instance info") },
                         selected = false,
-                        onClick = { /* TODO() Navigate to Instance Screen */ },
+                        onClick = { navController.navigate("InstanceInfo") },
                         modifier = modifier.padding(start = 20.dp)
                     )
                     NavigationDrawerItem(

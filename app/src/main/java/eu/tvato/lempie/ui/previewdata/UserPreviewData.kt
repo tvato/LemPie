@@ -10,17 +10,17 @@ import eu.tvato.lempie.user.UserView
 
 val previewUsers = listOf(
     User(
-        id = 1, name = "TestUser1", displayName = null, avatarUrl = null, published = "2022-07-09T17:56:21.988295Z",
+        id = 1, name = "TestUser1", displayName = "TestUser1", avatarUrl = null, published = "2022-07-09T17:56:21.988295Z",
         updated = null, bio = null, isLocal = false, bannerUrl = null, isDeleted = false, matrixUserId = null,
         isBotAccount = false, instanceId = 1, actorId = "https://some.site.fi/u/testuser1", banExpires = ""
     ),
     User(
-        id = 2, name = "User2Test", displayName = null, avatarUrl = null, published = "2022-07-09T17:56:21.988295Z",
+        id = 2, name = "User2Test", displayName = "User2Test", avatarUrl = null, published = "2022-07-09T17:56:21.988295Z",
         updated = null, bio = null, isLocal = false, bannerUrl = null, isDeleted = false, matrixUserId = null,
         isBotAccount = false, instanceId = 1, actorId = "https://one.more.com/u/user2test", banExpires = ""
     ),
     User(
-        id = 3, name = "3TestUser", displayName = null, avatarUrl = null, published = "2022-07-09T17:56:21.988295Z",
+        id = 3, name = "3TestUser", displayName = "3TestUser", avatarUrl = null, published = "2022-07-09T17:56:21.988295Z",
         updated = null, bio = null, isLocal = false, bannerUrl = null, isDeleted = false, matrixUserId = null,
         isBotAccount = false, instanceId = 1, actorId = "https://lemmy.world/u/3TestUser", banExpires = ""
     ),
@@ -30,17 +30,17 @@ val previewUserViews = listOf(
     UserView(
         user = previewUsers[0],
         counts = UserCounts(1, 22, 32),
-        isAdmin = false,
+        isAdmin = true,
     ),
     UserView(
         user = previewUsers[1],
         counts = UserCounts(2, 14, 2),
-        isAdmin = false,
+        isAdmin = true,
     ),
     UserView(
         user = previewUsers[2],
         counts = UserCounts(3, 5, 11),
-        isAdmin = false,
+        isAdmin = true,
     ),
 )
 
