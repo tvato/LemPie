@@ -12,7 +12,7 @@ val previewComments = listOf(
         isDistinguished = false, languageId = 1
     ),
     Comment(
-        id = 3, userId = 2, postId = 1, content = "Comment 3",
+        id = 3, userId = 2, postId = 1, content = "\n\n\n\n\n\n\n\n\n\t     \n\n         \t\tComment 3 and some new lines after to test stripping: \n\n\n\n \n\n",
         isRemoved = false, published = "2022-07-09T17:56:21.988295Z", updated = null,
         isDeleted = false, commentLink = "null", isLocal = false, path = "0.2.3",
         isDistinguished = false, languageId = 1
@@ -36,7 +36,7 @@ val previewComments = listOf(
         isDistinguished = false, languageId = 1
     ),
     Comment(
-        id = 6, userId = 3, postId = 1, content = "Comment 5",
+        id = 6, userId = 3, postId = 1, content = "Comment 5, some more text to test padding of comments, so it does not hug the right wall so hard",
         isRemoved = false, published = "2022-07-09T17:56:21.988295Z", updated = null,
         isDeleted = false, commentLink = "null", isLocal = false, path = "0.2.3.5.8.10.15.32",
         isDistinguished = false, languageId = 1

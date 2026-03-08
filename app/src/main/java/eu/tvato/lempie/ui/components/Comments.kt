@@ -80,17 +80,17 @@ fun CommentRow(
                 color = MaterialTheme.colorScheme.tertiary
             )
         }
-        Text(
+        Text(       // TODO() Remove when you are sure comments are sorted :D
             text = comment?.comment?.path.toString(),
             color = MaterialTheme.colorScheme.onBackground,
             modifier = modifier.padding(start = startPadding)
         )
         Text(
-            text = comment?.comment?.content.toString(),
+            text = comment?.comment?.content.toString().trim(),
             modifier = modifier
                 .padding(
                     start = startPadding,
-                    top = 5.dp, bottom = 5.dp
+                    top = 5.dp, bottom = 5.dp, end = 5.dp
                 )
                 .fillMaxWidth(),
             color = MaterialTheme.colorScheme.onBackground
