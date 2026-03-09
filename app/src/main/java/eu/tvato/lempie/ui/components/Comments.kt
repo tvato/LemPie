@@ -33,11 +33,10 @@ fun CommentRow(
     username: String,
     userInstance: String,
     format: String,
-    modifier: Modifier = Modifier,
-    noPadding: Boolean = false
+    modifier: Modifier = Modifier
 ) {
-    val paddingValue = if(noPadding) 0 else comment?.comment?.path?.split(".")?.size?.minus(2) ?: 0
-    val startPadding = paddingValue.plus(8).times(paddingValue.plus(2).div(2)).dp
+    val paddingValue = comment?.comment?.path?.split(".")?.size?.minus(2) ?: 0
+    val startPadding = paddingValue.times(paddingValue + 3).dp
     val colors = listOf(
         // TODO() Change these colors, maybe use theme for this
         Color.Red, Color.Green, Color.Blue, Color.Yellow
@@ -56,12 +55,11 @@ fun CommentRow(
             }
         }
     Column(
-        modifier = if(paddingValue != 0) {
-                lines
-            }else{
-                modifier
-                    .background(MaterialTheme.colorScheme.primaryContainer)
-            }
+        modifier =  if(paddingValue != 0) {
+                        lines
+                    }else{
+                        modifier.background(MaterialTheme.colorScheme.primaryContainer)
+                    }.padding(start = 10.dp)
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -239,62 +237,52 @@ fun UserComment(
     }
 }
 
-@Preview
 @Composable
-fun CommentRowPreview(){
+fun CommentRowPreview(
+    comment: CommentView = previewCommentViews[0]
+){
     LemPieTheme(theme = Theme.Dark) {
-        val comment = previewCommentViews[0]
         CommentRow(
             comment = comment,
             username = comment.creator.displayName ?: comment.creator.name,
             userInstance = comment.creator.actorId,
-            noPadding = false,
             format = "MMM d, yy, HH:mm"
         )
     }
+}
+
+@Preview
+@Composable
+fun CommentRowPreview0(){
+    CommentRowPreview()
+}
+
+@Preview
+@Composable
+fun CommentRowPreview1(){
+    CommentRowPreview(comment = previewCommentViews[1])
 }
 
 @Preview
 @Composable
 fun CommentRowPreview2(){
-    LemPieTheme(theme = Theme.Dark) {
-        val comment = previewCommentViews[1]
-        CommentRow(
-            comment = comment,
-            username = comment.creator.displayName ?: comment.creator.name,
-            userInstance = comment.creator.actorId,
-            noPadding = false,
-            format = "MMM d, yy, HH:mm"
-        )
-    }
+    CommentRowPreview(comment = previewCommentViews[2])
 }
 
 @Preview
 @Composable
 fun CommentRowPreview3(){
-    LemPieTheme(theme = Theme.Dark) {
-        val comment = previewCommentViews[5]
-        CommentRow(
-            comment = comment,
-            username = comment.creator.displayName ?: comment.creator.name,
-            userInstance = comment.creator.actorId,
-            noPadding = false,
-            format = "MMM d, yy, HH:mm"
-        )
-    }
+    CommentRowPreview(comment = previewCommentViews[3])
 }
 
 @Preview
 @Composable
 fun CommentRowPreview4(){
-    LemPieTheme(theme = Theme.Dark) {
-        val comment = previewCommentViews[2]
-        CommentRow(
-            comment = comment,
-            username = comment.creator.displayName ?: comment.creator.name,
-            userInstance = comment.creator.actorId,
-            noPadding = false,
-            format = "MMM d, yy, HH:mm"
-        )
-    }
+    CommentRowPreview(comment = previewCommentViews[4])
+}
+
+@Preview
+@Composable
+fun CommentRowPreview5(){
+    CommentRowPreview(comment = previewCommentViews[5])
 }
