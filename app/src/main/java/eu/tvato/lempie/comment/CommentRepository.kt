@@ -15,8 +15,7 @@ class CommentRepository(
             config = PagingConfig(
                 pageSize = 100,
                 enablePlaceholders = false,
-                prefetchDistance = 10,
-                initialLoadSize = 10
+                prefetchDistance = 10
             ),
             pagingSourceFactory = {
                 CommentPagingSource(api, postId)

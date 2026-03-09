@@ -15,7 +15,6 @@ import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
-import eu.tvato.lempie.utils.CommentUtils
 import eu.tvato.lempie.ui.components.CommentRow
 import eu.tvato.lempie.ui.components.PostCard
 import eu.tvato.lempie.ui.previewdata.previewCommentViews
@@ -41,15 +40,13 @@ fun PostScreen(
         )
     )[PostViewModel::class.java]
 
-    // This needs to be called to start the Paging of the comments
-    viewModel.comments.collectAsLazyPagingItems()
+    val comments = viewModel.comments.collectAsLazyPagingItems()
     val postView = viewModel.postDetail.collectAsState()
     val format = viewModel.datetimeFormat.collectAsState()
 
-    // CommentUtils is just a workaround to get comments in a sorted manner. Possible TODO()
-    val commentList = CommentUtils.getComments()
     LazyColumn(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
             .background(MaterialTheme.colorScheme.primaryContainer),
         contentPadding = innerPadding
     ) {
@@ -63,14 +60,14 @@ fun PostScreen(
             )
         }
 
-        if(commentList.isNotEmpty()) items(
-            count = commentList.size,
-            key = { index -> commentList[index].comment.id }
-        ){ index ->
+        items(
+            count = comments.itemCount,
+            key = { index -> comments[index]?.comment?.id ?: index }
+        ) { index ->
             CommentRow(
-                comment = commentList[index],
-                username = commentList[index].creator.displayName ?: commentList[index].creator.name,
-                userInstance = commentList[index].creator.actorId,
+                comment = comments[index],
+                username = comments[index]?.creator?.displayName ?: comments[index]?.creator?.name.toString(),
+                userInstance = comments[index]?.creator?.actorId.toString(),
                 format = format.value
             )
         }
@@ -85,7 +82,8 @@ fun PostScreenPreviewDark(
 ){
     LemPieTheme(theme = Theme.Dark) {
         LazyColumn(
-            modifier = modifier.fillMaxSize()
+            modifier = modifier
+                .fillMaxSize()
                 .background(MaterialTheme.colorScheme.primaryContainer)
         ) {
             item {
@@ -120,7 +118,8 @@ fun PostScreenPreviewLight(
 ){
     LemPieTheme(theme = Theme.Light) {
         LazyColumn(
-            modifier = modifier.fillMaxSize()
+            modifier = modifier
+                .fillMaxSize()
                 .background(MaterialTheme.colorScheme.primaryContainer)
         ) {
             item {
@@ -156,7 +155,8 @@ fun PostScreenPreviewDarkGen(
 ){
     LemPieTheme(theme = Theme.DarkGen) {
         LazyColumn(
-            modifier = modifier.fillMaxSize()
+            modifier = modifier
+                .fillMaxSize()
                 .background(MaterialTheme.colorScheme.primaryContainer)
         ) {
             item {
