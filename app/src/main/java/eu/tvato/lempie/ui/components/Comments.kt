@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -44,7 +45,7 @@ fun CommentRow(
     val lines = modifier
         .background(MaterialTheme.colorScheme.primaryContainer)
         .drawBehind {
-            for(i in 0..<paddingValue){
+            for(i in 0..<paddingValue) {
                 val xOffset = i.times(20f) + i.plus(1).times(2f)
                 drawLine(
                     color = if(i < 4) colors[i] else colors[i - 4],
@@ -86,7 +87,22 @@ fun CommentRow(
             modifier = modifier.padding(start = startPadding)
         )
         Text(
-            text = comment?.comment?.content.toString().trim(),
+            text =  if(comment?.comment?.isDeleted ?: false) {
+                        Utils.parseMarkdown(
+                            "*deleted by **creator***",
+                            LocalContext.current
+                        )
+                    }else if(comment?.comment?.isRemoved ?: false){
+                        Utils.parseMarkdown(
+                            "**removed by **moderator***",
+                            LocalContext.current
+                        )
+                    }else{
+                        Utils.parseMarkdown(
+                            comment?.comment?.content.toString().trim(),
+                            LocalContext.current
+                        )
+                    },
             modifier = modifier
                 .padding(
                     start = startPadding,
@@ -165,7 +181,22 @@ fun UserComment(
             )
         }
         Text(
-            text = comment?.comment?.content.toString(),
+            text =  if(comment?.comment?.isDeleted ?: false) {
+                        Utils.parseMarkdown(
+                            "*deleted by **creator***",
+                            LocalContext.current
+                        )
+                    }else if(comment?.comment?.isRemoved ?: false){
+                        Utils.parseMarkdown(
+                            "**removed by **moderator***",
+                            LocalContext.current
+                        )
+                    }else{
+                        Utils.parseMarkdown(
+                            comment?.comment?.content.toString().trim(),
+                            LocalContext.current
+                        )
+                    },
             modifier = modifier
                 .padding(
                     start = 5.dp,
@@ -215,7 +246,7 @@ fun CommentRowPreview(){
         val comment = previewCommentViews[0]
         CommentRow(
             comment = comment,
-            username = comment.creator.name,
+            username = comment.creator.displayName ?: comment.creator.name,
             userInstance = comment.creator.actorId,
             noPadding = false,
             format = "MMM d, yy, HH:mm"
@@ -230,7 +261,7 @@ fun CommentRowPreview2(){
         val comment = previewCommentViews[1]
         CommentRow(
             comment = comment,
-            username = comment.creator.name,
+            username = comment.creator.displayName ?: comment.creator.name,
             userInstance = comment.creator.actorId,
             noPadding = false,
             format = "MMM d, yy, HH:mm"
@@ -245,7 +276,7 @@ fun CommentRowPreview3(){
         val comment = previewCommentViews[5]
         CommentRow(
             comment = comment,
-            username = comment.creator.name,
+            username = comment.creator.displayName ?: comment.creator.name,
             userInstance = comment.creator.actorId,
             noPadding = false,
             format = "MMM d, yy, HH:mm"
@@ -260,7 +291,7 @@ fun CommentRowPreview4(){
         val comment = previewCommentViews[2]
         CommentRow(
             comment = comment,
-            username = comment.creator.name,
+            username = comment.creator.displayName ?: comment.creator.name,
             userInstance = comment.creator.actorId,
             noPadding = false,
             format = "MMM d, yy, HH:mm"
