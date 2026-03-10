@@ -56,7 +56,8 @@ fun PostScreen(
                 user = postView.value?.creator,
                 community = postView.value?.community,
                 navController = navController,
-                format = format.value
+                format = format.value,
+                noNav = true
             )
         }
 

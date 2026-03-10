@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,8 +15,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -29,6 +30,7 @@ import eu.tvato.lempie.post.Post
 import eu.tvato.lempie.post.PostView
 import eu.tvato.lempie.ui.previewdata.previewPostViews
 import eu.tvato.lempie.ui.theme.LemPieTheme
+import eu.tvato.lempie.ui.theme.Theme
 import eu.tvato.lempie.user.User
 import eu.tvato.lempie.utils.Utils
 
@@ -41,25 +43,22 @@ fun PostCard(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     limitTextRows: Boolean = false,
-    noText: Boolean = false
+    noText: Boolean = false,
+    noNav: Boolean = false
 ){
     Card(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primaryContainer)
             .padding(bottom = 5.dp)
-            .clickable(onClick = {
-                navController.navigate("Post/${post?.post?.id}")
-            }),
+            .clickable {
+                if(!noNav) navController.navigate("Post/${post?.post?.id}")
+            },
         shape = CardDefaults.shape,
         colors = CardDefaults.cardColors().copy(
             containerColor = MaterialTheme.colorScheme.background,
             contentColor = MaterialTheme.colorScheme.onBackground
         ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 20.dp
-        ),
-        border = null
     ) {
         BasicPostInfo(
             user = user,
@@ -69,41 +68,52 @@ fun PostCard(
         )
         Text(
             text = post?.post?.title.toString(),
-            fontSize = 30.sp,
+            fontSize = 24.sp,
             modifier = modifier.padding(start = 20.dp, top = 10.dp, bottom = 20.dp, end = 20.dp),
             color = MaterialTheme.colorScheme.onBackground
         )
 
         TagAndDateRow(post?.post, format)
 
-        if(post?.post?.imageOrLink != null && post.post.urlContentType?.contains("image") != true) Text(
-            text = post.post.imageOrLink.split("/")[2],
-            modifier = modifier.padding(start = 20.dp),
-            color = MaterialTheme.colorScheme.tertiary
-        )
+        if(post?.post?.imageOrLink != null && post.post.urlContentType?.contains("image") != true)
+            Text(
+                text = post.post.imageOrLink.split("/")[2],
+                color = MaterialTheme.colorScheme.tertiary,
+                modifier = modifier
+                    .padding(start = 20.dp)
+                    .clickable { /* TODO() Open default browser on click */ },
+            )
 
-        if(post?.post?.urlContentType?.contains("image") ?: false){
+        if(post?.post?.urlContentType?.contains("image") ?: false) {
             AsyncImage(
                 model = post.post.imageOrLink,
                 contentDescription = null,
+                contentScale = ContentScale.FillWidth,
+                alignment = Alignment.Center,
                 modifier = modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(start = 20.dp, top =10.dp, bottom = 10.dp, end = 20.dp)
-                    .fillMaxHeight(0.5f)
+                    .fillMaxSize()
+                    .padding(start = 5.dp, top = 10.dp, bottom = 10.dp, end = 5.dp)
+
             )
-        }else if(post?.post?.imageOrLink == null){
+        }else if(post?.post?.urlContentType?.contains("video") ?: false){
+            VideoPlayer(
+                videoUrl = post.post.imageOrLink ?: ""
+            )
+        }else {
             AsyncImage(
                 model = post?.post?.thumbnailUrl,
                 contentDescription = null,
+                alignment = Alignment.Center,
+                contentScale = ContentScale.FillWidth,
                 modifier = modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(start = 20.dp, top =10.dp, bottom = 10.dp, end = 20.dp)
-                    .fillMaxHeight(0.5f)
+                    .fillMaxSize()
+                    .padding(start = 5.dp, top = 10.dp, bottom = 10.dp, end = 5.dp)
+                    .clickable { /* TODO() Open default browser on click */ },
             )
         }
         if(post?.post?.text?.isNotEmpty() ?: false && !noText) {
             Text(
-                text = post.post.text,
+                text = Utils.parseMarkdown(post.post.text, LocalContext.current),
                 modifier = modifier.padding(start = 20.dp, top = 10.dp, end = 20.dp, bottom = 20.dp),
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = if(limitTextRows) 5 else Int.MAX_VALUE,
@@ -183,14 +193,15 @@ fun ButtonsRow(post: PostView?, modifier: Modifier = Modifier){
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 fun PostCardPreview() {
-    LemPieTheme {
+    val postView = previewPostViews[1]
+    LemPieTheme(theme = Theme.Dark) {
         PostCard(
-            post = previewPostViews[2],
-            community = previewPostViews[2].community,
-            user = previewPostViews[2].creator,
+            post = postView,
+            community = postView.community,
+            user = postView.creator,
             navController = rememberNavController(),
             format = "MMM d, yy, HH:mm"
         )
