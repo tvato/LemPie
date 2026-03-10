@@ -59,6 +59,7 @@ fun BasicPostInfo(
                 .width(30.dp)
                 .height(30.dp)
                 .clip(CircleShape)
+                .clickable{ navController.navigate("Community/${community?.id}") }
         )
         Column(
             modifier = modifier.padding(start = 10.dp)
@@ -66,16 +67,14 @@ fun BasicPostInfo(
             Text(
                 text = "${community?.name.toString()}@${communityUrl}",
                 color = MaterialTheme.colorScheme.primary,
-                modifier = modifier.clickable(onClick = {
-                    navController.navigate("Community/${community?.id}")
-                })
+                modifier = modifier
+                    .clickable{ navController.navigate("Community/${community?.id}") }
             )
             Text(
                 text = "${user?.displayName ?: user?.name.toString()}@${userUrl}",
                 color = MaterialTheme.colorScheme.secondary,
-                modifier = modifier.clickable(onClick = {
-                    navController.navigate("User/${user?.id}")
-                })
+                modifier = modifier
+                    .clickable{ navController.navigate("User/${user?.id}") }
             )
         }
 
