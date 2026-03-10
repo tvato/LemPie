@@ -31,6 +31,11 @@ android {
                 "proguard-rules.pro"
             )
         }
+
+        debug {
+            isDebuggable = true
+            isMinifyEnabled = false
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -71,7 +76,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.10.0")
     implementation("androidx.activity:activity-compose:1.12.2")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("io.coil-kt:coil-compose:2.6.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")       // API call logger, can be removed after debugging
     implementation("androidx.compose.material:material-icons-core:1.4.0")
     implementation("androidx.datastore:datastore-preferences:1.2.0")
@@ -82,6 +86,16 @@ dependencies {
 
     // Optional - Extensions and Coroutines support
     //implementation("androidx.room:room-ktx:2.8.4")
+
+    // ExoPlayer
+    implementation("androidx.media3:media3-exoplayer:1.9.2")
+    implementation("androidx.media3:media3-ui:1.9.2")
+    implementation("androidx.media3:media3-ui-compose:1.9.2")
+    implementation("androidx.media3:media3-exoplayer-dash:1.9.2")
+
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.6.0")
+    implementation("io.coil-kt:coil-gif:2.6.0")
 
     // Markwon
     implementation("io.noties.markwon:core:4.6.2")
