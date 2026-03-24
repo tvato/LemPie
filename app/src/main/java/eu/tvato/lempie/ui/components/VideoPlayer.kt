@@ -32,7 +32,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
-import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.compose.SURFACE_TYPE_TEXTURE_VIEW
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
@@ -43,6 +42,7 @@ import androidx.core.net.toUri
 import androidx.media3.common.VideoSize
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.ui.compose.ContentFrame
+import eu.tvato.lempie.utils.PlayerItem
 import eu.tvato.lempie.utils.PlayerUtils
 
 @OptIn(UnstableApi::class)
@@ -86,7 +86,7 @@ fun VideoPlayer(
 
     DisposableEffect(Unit) {
         onDispose {
-            PlayerUtils.freePlayer(player.value?.index)
+            if(player.value?.isFullscreen == false) PlayerUtils.freePlayer(player.value?.index)
         }
     }
 
@@ -118,10 +118,9 @@ fun VideoPlayer(
                 .align(Alignment.Center),
         )
         VideoControls(
-            player = player.value?.player,
+            player = player.value,
             controlsVisible = controlsVisible,
-            navController = navController,
-            videoUrl = videoUrl
+            navController = navController
         )
 
     }
@@ -152,15 +151,14 @@ fun FullscreenImage(
 
 @Composable
 fun VideoControls(
-    player: ExoPlayer?,
+    player: PlayerItem?,
     controlsVisible: MutableState<Boolean>,
     navController: NavHostController,
-    videoUrl: String,
     modifier: Modifier = Modifier
 ){
-    val isPlaying = remember { mutableStateOf(player?.isPlaying ?: false) }
-    val isMuted = remember { mutableStateOf(player?.volume == 0f) }
-    val currentPosition = remember { mutableLongStateOf(player?.currentPosition ?: 0L) }
+    val isPlaying = remember { mutableStateOf(player?.player?.isPlaying ?: false) }
+    val isMuted = remember { mutableStateOf(player?.player?.volume == 0f) }
+    val currentPosition = remember { mutableLongStateOf(player?.player?.currentPosition ?: 0L) }
 
     if(controlsVisible.value) Column(
         verticalArrangement = Arrangement.Center,
@@ -176,7 +174,7 @@ fun VideoControls(
         ) {
             IconButton(
                 onClick = {
-                    if(isMuted.value) player?.volume = 1f else player?.volume = 0f
+                    if(isMuted.value) player?.player?.volume = 1f else player?.player?.volume = 0f
                     isMuted.value = !isMuted.value
                 }
             ) {
@@ -190,7 +188,7 @@ fun VideoControls(
             }
             IconButton(
                 onClick = {
-                    if(isPlaying.value) player?.pause() else player?.play()
+                    if(isPlaying.value) player?.player?.pause() else player?.player?.play()
                     isPlaying.value = !isPlaying.value
                 }
             ) {
@@ -204,7 +202,8 @@ fun VideoControls(
             }
             IconButton(
                 onClick = {
-                    navController.navigate("FullscreenMedia/${videoUrl}")
+                    if(player?.isFullscreen == false) navController.navigate("FullscreenMedia/${player.index}")
+                    player?.isFullscreen = true
                 }
             ) {
                 Icon(
@@ -300,7 +299,7 @@ fun VideoControlsPreview(
                 )
             }
             IconButton(
-                onClick = { /* TODO() Make VideoPlayer go fullscreen */ }
+                onClick = {  }
             ) {
                 Icon(
                     painter = painterResource(R.drawable.comment),

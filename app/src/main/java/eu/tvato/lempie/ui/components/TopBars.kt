@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import eu.tvato.lempie.ui.theme.LemPieTheme
+import eu.tvato.lempie.utils.PlayerUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -152,6 +153,54 @@ fun UserTopBar(
                 )
             }
             // TODO() One button for "more" -menu
+        },
+        colors = TopAppBarDefaults.topAppBarColors().copy(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        ),
+        scrollBehavior = scrollBehavior
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun FullscreenMediaTopBar(
+    scrollBehavior: TopAppBarScrollBehavior,
+    navController: NavHostController,
+    playerIndex: Int?
+){
+    TopAppBar(
+        title = {
+            Text(
+                text = "LemPie"
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = {
+                if(playerIndex != null) PlayerUtils.getPlayerWithIndex(playerIndex)?.isFullscreen = false
+                navController.navigateUp()
+            }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Go back"
+                )
+            }
+        },
+        actions = {
+            IconButton(onClick = {}) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add"
+                )
+            }
+            IconButton(onClick = {}) {
+                Icon(
+                    imageVector = Icons.Default.Menu,
+                    contentDescription = "Menu"
+                )
+            }
         },
         colors = TopAppBarDefaults.topAppBarColors().copy(
             containerColor = MaterialTheme.colorScheme.primaryContainer,

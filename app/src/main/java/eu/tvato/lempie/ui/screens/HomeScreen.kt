@@ -33,6 +33,7 @@ import androidx.navigation.navArgument
 import androidx.paging.compose.collectAsLazyPagingItems
 import eu.tvato.lempie.utils.CommentUtils
 import eu.tvato.lempie.ui.components.DrawerMenu
+import eu.tvato.lempie.ui.components.FullscreenMediaTopBar
 import eu.tvato.lempie.ui.components.HomeTopBar
 import eu.tvato.lempie.ui.components.PostCard
 import eu.tvato.lempie.ui.components.PostTopBar
@@ -188,20 +189,21 @@ fun HomeScreen(
             }
         }
         composable(
-            route = "FullscreenMedia/{url}",
-            arguments = listOf(navArgument("url"){ type = NavType.StringType })
+            route = "FullscreenVideo/{playerIndex}",
+            arguments = listOf(navArgument("playerIndex"){ type = NavType.IntType })
         ){ backStack ->
             val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
             Scaffold(
                 topBar = {
-                    PostTopBar(
+                    FullscreenMediaTopBar(
                         scrollBehavior = scrollBehavior,
-                        navController = navController
+                        navController = navController,
+                        playerIndex = backStack.arguments!!.getInt("playerIndex")
                     )
                 }
             ) { innerPadding ->
-                MediaScreen(
-                    url = backStack.arguments!!.getString("url"),
+                FullscreenVideoScreen(
+                    playerIndex = backStack.arguments!!.getInt("playerIndex"),
                     navController = navController,
                     innerPadding = innerPadding
                 )
