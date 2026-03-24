@@ -58,13 +58,13 @@ val previewPostViews = listOf(
         subscribed = "", isSaved = false, isRead = false, isHidden = false, creatorBlocked = false, myVote = null, unreadComments = 0
     ),
     PostView(
-        post = previewPosts[1], creator = previewUsers[1], community = previewCommunities[0], imageDetails = null,
+        post = previewPosts[2], creator = previewUsers[2], community = previewCommunities[1], imageDetails = null,
         creatorBannedFromCommunity = false, bannedFromCommunity = false, creatorIsMod = false, creatorIsAdmin = false,
         counts = PostCounts(postId = 1, commentCount = 23, score = 22, upvotes = 30, downvotes = 8, published = "2022-07-09T17:56:21.988295Z", newestCommentTime = ""),
         subscribed = "", isSaved = false, isRead = false, isHidden = false, creatorBlocked = false, myVote = null, unreadComments = 0
     ),
     PostView(
-        post = previewPosts[2], creator = previewUsers[2], community = previewCommunities[1], imageDetails = null,
+        post = previewPosts[1], creator = previewUsers[1], community = previewCommunities[0], imageDetails = null,
         creatorBannedFromCommunity = false, bannedFromCommunity = false, creatorIsMod = false, creatorIsAdmin = false,
         counts = PostCounts(postId = 1, commentCount = 23, score = 22, upvotes = 30, downvotes = 8, published = "2022-07-09T17:56:21.988295Z", newestCommentTime = ""),
         subscribed = "", isSaved = false, isRead = false, isHidden = false, creatorBlocked = false, myVote = null, unreadComments = 0

@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -14,6 +15,8 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -184,6 +187,26 @@ fun HomeScreen(
                 )
             }
         }
+        composable(
+            route = "FullscreenMedia/{url}",
+            arguments = listOf(navArgument("url"){ type = NavType.StringType })
+        ){ backStack ->
+            val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+            Scaffold(
+                topBar = {
+                    PostTopBar(
+                        scrollBehavior = scrollBehavior,
+                        navController = navController
+                    )
+                }
+            ) { innerPadding ->
+                MediaScreen(
+                    url = backStack.arguments!!.getString("url"),
+                    navController = navController,
+                    innerPadding = innerPadding
+                )
+            }
+        }
     }
 }
 
@@ -200,12 +223,19 @@ fun CardList(
             context = LocalContext.current
         )
     )[HomeViewModel::class.java]
+
     val posts = viewModel.posts.collectAsLazyPagingItems()
     val format = viewModel.datetimeFormat.collectAsState()
+
+    val listState = rememberLazyListState()
+    val firstVisibleItem = remember { derivedStateOf { listState.firstVisibleItemIndex } }
+
     LazyColumn(
-        modifier = modifier.fillMaxSize()
+        contentPadding = innerPadding,
+        state = listState,
+        modifier = modifier
+            .fillMaxSize()
             .background(MaterialTheme.colorScheme.primaryContainer),
-        contentPadding = innerPadding
     ) {
         items(
             count = posts.itemCount,
@@ -219,7 +249,8 @@ fun CardList(
                 limitTextRows = true,
                 noText = true,
                 format = format.value,
-                modifier = modifier
+                modifier = modifier,
+                prepareVideo = (index == firstVisibleItem.value),
             )
         }
 
@@ -257,12 +288,14 @@ fun CardList(
     }
 }
 
-@Preview
 @Composable
-fun CardListPreviewDark(){
-    LemPieTheme(theme = Theme.Dark) {
+fun CardListPreview(
+    theme: Theme = Theme.Dark
+){
+    LemPieTheme(theme = theme) {
         LazyColumn(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .background(MaterialTheme.colorScheme.primaryContainer)
         ) {
             items(
@@ -285,50 +318,18 @@ fun CardListPreviewDark(){
 
 @Preview
 @Composable
+fun CardListPreviewDark(){
+    CardListPreview()
+}
+
+@Preview
+@Composable
 fun CardListPreviewLight(){
-    LemPieTheme(theme = Theme.Light) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
-                .background(MaterialTheme.colorScheme.primaryContainer)
-        ) {
-            items(
-                count = previewPostViews.size,
-                key = { index -> previewPostViews[index].post.id }
-            ) { index ->
-                PostCard(
-                    post = previewPostViews[index],
-                    user = previewPostViews[index].creator,
-                    community = previewPostViews[index].community,
-                    navController = rememberNavController(),
-                    limitTextRows = true,
-                    format = "MMM d, yy, HH:mm"
-                )
-            }
-        }
-    }
+    CardListPreview(theme = Theme.Light)
 }
 
 @Preview
 @Composable
 fun CardListPreviewDarkGen(){
-    LemPieTheme(theme = Theme.DarkGen) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
-                .background(MaterialTheme.colorScheme.primaryContainer)
-        ) {
-            items(
-                count = previewPostViews.size,
-                key = { index -> previewPostViews[index].post.id }
-            ) { index ->
-                PostCard(
-                    post = previewPostViews[index],
-                    user = previewPostViews[index].creator,
-                    community = previewPostViews[index].community,
-                    navController = rememberNavController(),
-                    limitTextRows = true,
-                    format = "MMM d, yy, HH:mm"
-                )
-            }
-        }
-    }
+    CardListPreview(theme = Theme.DarkGen)
 }

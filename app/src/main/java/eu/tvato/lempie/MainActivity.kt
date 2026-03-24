@@ -28,6 +28,7 @@ import eu.tvato.lempie.datastore.DataStoreRepository
 import eu.tvato.lempie.ui.screens.HomeScreen
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.ui.theme.Theme
+import eu.tvato.lempie.utils.PlayerUtils
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -35,6 +36,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            PlayerUtils.initializePlayerPool(this)
             var theme by remember { mutableStateOf("Dark") }
             LaunchedEffect(Unit) {
                 lifecycleScope.launch {

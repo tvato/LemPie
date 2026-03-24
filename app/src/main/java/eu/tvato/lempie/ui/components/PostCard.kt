@@ -13,6 +13,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -44,8 +46,19 @@ fun PostCard(
     modifier: Modifier = Modifier,
     limitTextRows: Boolean = false,
     noText: Boolean = false,
-    noNav: Boolean = false
+    noNav: Boolean = false,
+    prepareVideo: Boolean = false,
 ){
+    val setFullscreen = remember { mutableStateOf(false) }
+    when {
+        setFullscreen.value -> {
+            FullscreenImage(
+                imageUrl = post?.post?.imageOrLink ?: "",
+                dismiss = { setFullscreen.value = false }
+            )
+        }
+    }
+
     Card(
         modifier = modifier
             .fillMaxSize()
@@ -93,11 +106,13 @@ fun PostCard(
                 modifier = modifier
                     .fillMaxSize()
                     .padding(start = 5.dp, top = 10.dp, bottom = 10.dp, end = 5.dp)
-
+                    .clickable { if(noNav) setFullscreen.value = !setFullscreen.value }
             )
         }else if(post?.post?.urlContentType?.contains("video") ?: false){
             VideoPlayer(
-                videoUrl = post.post.imageOrLink ?: ""
+                videoUrl = post.post.imageOrLink ?: "",
+                navController = navController,
+                prepare = prepareVideo,
             )
         }else {
             AsyncImage(
@@ -160,7 +175,7 @@ fun ButtonsRow(post: PostView?, modifier: Modifier = Modifier){
         horizontalArrangement = Arrangement.Start,
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp, bottom = 10.dp, top = 10.dp)
+            .padding(start = 10.dp, end = 10.dp, bottom = 10.dp, top = 10.dp)
     ){
         Row{
             InteractionButton(
@@ -170,12 +185,12 @@ fun ButtonsRow(post: PostView?, modifier: Modifier = Modifier){
             InteractionButton(
                 res = R.drawable.downvote,
                 text = post?.counts?.downvotes.toString(),
-                modifier = modifier.padding(start = 10.dp)
+                modifier = modifier.padding(start = 5.dp)
             )
             InteractionButton(
                 res = R.drawable.comment,
                 text = post?.counts?.commentCount.toString(),
-                modifier = modifier.padding(start = 10.dp)
+                modifier = modifier.padding(start = 5.dp)
             )
         }
         Spacer(modifier = Modifier.weight(1f))
@@ -187,7 +202,7 @@ fun ButtonsRow(post: PostView?, modifier: Modifier = Modifier){
             InteractionButton(
                 res = R.drawable.share,
                 text = null,
-                modifier = modifier.padding(start = 10.dp)
+                modifier = modifier.padding(start = 5.dp)
             )
         }
     }

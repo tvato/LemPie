@@ -19,7 +19,7 @@ fun InteractionButton(
     text: String?,
     modifier: Modifier = Modifier
 ){
-    Row(modifier = modifier){
+    Row(modifier = modifier.padding(end = 5.dp)){
         Icon(
             painter = painterResource(res),
             contentDescription = null,
@@ -27,8 +27,8 @@ fun InteractionButton(
         )
         if(text != null) Text(
             text = text,
-            modifier = Modifier.align(Alignment.CenterVertically).padding(start = 5.dp),
             color = MaterialTheme.colorScheme.surfaceBright,
+            modifier = Modifier.align(Alignment.CenterVertically).padding(start = 5.dp),
         )
     }
 }
