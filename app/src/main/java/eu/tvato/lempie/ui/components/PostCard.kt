@@ -13,8 +13,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -35,6 +33,7 @@ import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.ui.theme.Theme
 import eu.tvato.lempie.user.User
 import eu.tvato.lempie.utils.Utils
+import java.net.URLEncoder
 
 @Composable
 fun PostCard(
@@ -49,16 +48,6 @@ fun PostCard(
     noNav: Boolean = false,
     prepareVideo: Boolean = false,
 ){
-    val setFullscreen = remember { mutableStateOf(false) }
-    when {
-        setFullscreen.value -> {
-            FullscreenImage(
-                imageUrl = post?.post?.imageOrLink ?: "",
-                dismiss = { setFullscreen.value = false }
-            )
-        }
-    }
-
     Card(
         modifier = modifier
             .fillMaxSize()
@@ -106,7 +95,7 @@ fun PostCard(
                 modifier = modifier
                     .fillMaxSize()
                     .padding(start = 5.dp, top = 10.dp, bottom = 10.dp, end = 5.dp)
-                    .clickable { if(noNav) setFullscreen.value = !setFullscreen.value }
+                    .clickable { navController.navigate("FullscreenImage/${URLEncoder.encode(post.post.imageOrLink, "UTF-8")}") }
             )
         }else if(post?.post?.urlContentType?.contains("video") ?: false){
             VideoPlayer(

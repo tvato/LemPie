@@ -28,13 +28,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.ui.compose.SURFACE_TYPE_TEXTURE_VIEW
 import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
 import eu.tvato.lempie.R
 import eu.tvato.lempie.ui.theme.LemPieTheme
 import eu.tvato.lempie.ui.theme.Theme
@@ -123,29 +120,6 @@ fun VideoPlayer(
             navController = navController
         )
 
-    }
-}
-
-@Composable
-fun FullscreenImage(
-    imageUrl: String,
-    dismiss: () -> Unit
-){
-    Dialog(     // TODO() Maybe use something else :D
-        onDismissRequest = dismiss,
-        properties = DialogProperties(
-            dismissOnBackPress = true,
-            usePlatformDefaultWidth = false
-        )
-    ){
-        AsyncImage(
-            model = imageUrl,
-            contentDescription = null,
-            contentScale = ContentScale.FillWidth,
-            alignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxSize()
-        )
     }
 }
 

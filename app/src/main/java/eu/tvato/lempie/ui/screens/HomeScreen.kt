@@ -209,6 +209,25 @@ fun HomeScreen(
                 )
             }
         }
+        composable(
+            route = "FullscreenImage/{imageUrl}",
+            arguments = listOf(navArgument("imageUrl"){ type = NavType.StringType })
+        ){ backStack ->
+            val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+            Scaffold(
+                topBar = {
+                    FullscreenMediaTopBar(
+                        scrollBehavior = scrollBehavior,
+                        navController = navController,
+                        playerIndex = null
+                    )
+                }
+            ) {
+                FullscreenImageScreen(
+                    imageUrl = backStack.arguments!!.getString("imageUrl")
+                )
+            }
+        }
     }
 }
 
