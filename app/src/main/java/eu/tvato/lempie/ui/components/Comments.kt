@@ -1,5 +1,6 @@
 package eu.tvato.lempie.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,14 +10,21 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -39,7 +47,7 @@ fun CommentRow(
     val startPadding = paddingValue.times(paddingValue + 3).dp
     val colors = listOf(
         // TODO() Change these colors, maybe use theme for this
-        Color.Red, Color.Green, Color.Blue, Color.Yellow
+        Color.Red, Color(0xFFFF9800), Color.Yellow, Color.Green, Color.Blue, Color.Magenta
     )
     val lines = modifier
         .background(MaterialTheme.colorScheme.primaryContainer)
@@ -47,8 +55,8 @@ fun CommentRow(
             for(i in 0..<paddingValue) {
                 val xOffset = i.times(20f) + i.plus(1).times(2f)
                 drawLine(
-                    color = if(i < 4) colors[i] else colors[i - 4],
-                    start = Offset(x = xOffset, y = -1f),
+                    color = if(i < colors.size) colors[i] else colors[i - colors.size],
+                    start = Offset(x = xOffset, y = 0f),
                     end = Offset(x = xOffset, y = size.height),
                     strokeWidth = 2.dp.toPx()
                 )
@@ -67,16 +75,17 @@ fun CommentRow(
                 .fillMaxWidth()
                 .padding(
                     start = startPadding,
-                    end = 5.dp, top = 5.dp, bottom = 5.dp
+                    end = 0.dp, top = 5.dp, bottom = 5.dp
                 )
         ) {
             Text(
                 text = "${username}@${if(userInstance.split("/").size > 1) userInstance.split("/")[2] else userInstance}",
-                color = MaterialTheme.colorScheme.secondary
+                color = MaterialTheme.colorScheme.secondary,
             )
             Text(
                 text = Utils.parseIsoDate(comment?.comment?.published, format),
-                color = MaterialTheme.colorScheme.tertiary
+                color = MaterialTheme.colorScheme.tertiary,
+                modifier = modifier.padding(end = 5.dp)
             )
         }
         Text(       // TODO() Remove when you are sure comments are sorted :D

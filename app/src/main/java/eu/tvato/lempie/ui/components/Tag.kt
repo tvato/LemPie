@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import eu.tvato.lempie.ui.theme.LemPieTheme
@@ -23,12 +24,13 @@ fun Tag(
     Box(
         modifier = modifier.heightIn(max = 25.dp)
             .clip(RoundedCornerShape(5.dp))
-            .background(MaterialTheme.colorScheme.tertiaryContainer),
+            .background(MaterialTheme.colorScheme.secondary),
         contentAlignment = Alignment.Center
     ){
         Text(
             text = text.toString(),
-            color = MaterialTheme.colorScheme.onTertiaryContainer,
+            fontWeight = FontWeight.Medium,
+            color = MaterialTheme.colorScheme.onSecondary,
             modifier = modifier.padding(start = 5.dp, end = 5.dp, bottom = 2.dp),
         )
     }
